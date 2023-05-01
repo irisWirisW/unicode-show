@@ -16,3 +16,5 @@ The function of this extension is to select a piece of unicode code and then dis
 ## Usage
 
 Select the unicode code, then press the shortcut key `ctrl+alt+u`, use `cmd+alt+u` on mac
+
+## TODO
