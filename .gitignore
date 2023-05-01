@@ -1,7 +1,18 @@
 node_modules/**
 node_modules
+
+# out files
 out/test
 out/test/**
+
+# src files
 src/test
 src/test/**
+
+# macOS files
+**/.DS_Store
 .DS_Store
+
+# generated files
+unicode-show-0.0.2.vsix
+unicode-show-*.vsix
