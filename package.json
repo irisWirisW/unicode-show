@@ -2,8 +2,13 @@
   "name": "unicode-show",
   "displayName": "unicode-show",
   "description": "Show Unicode Character",
+  "keywords": [
+    "vscode",
+    "Unicode",
+    "deta"
+  ],
   "author": "1risW",
-  "icon": "./images/icon.png",
+  "icon": "images/icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/Erica-Iris/unicode-show.git"
