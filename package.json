@@ -4,6 +4,10 @@
   "description": "Show Unicode Character",
   "author": "1risW",
   "icon": "./images/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Erica-Iris/unicode-show.git"
+  },
   "publisher": "1risW",
   "version": "0.0.2",
   "engines": {
