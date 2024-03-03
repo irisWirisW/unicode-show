@@ -1,8 +1,14 @@
 # Unicode Shower
 
+English|[中文](./readme_zh.md)
+
 ## Description
 
 The function of this extension is to select a piece of unicode code and then display the corresponding character.
+
+## Looks like
+
+![](./images/Resources/悬浮提示显示字符.png)
 
 ## Support Format
 
