@@ -4,6 +4,7 @@ node_modules
 # out files
 out/test
 out/test/**
+out/*
 
 # src files
 src/test

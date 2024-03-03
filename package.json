@@ -1,22 +1,20 @@
 {
   "name": "unicode-show",
+  "version": "0.0.3",
+  "publisher": "1risW",
+  "engines": {
+    "vscode": "^1.77.0"
+  },
   "displayName": "unicode-show",
-  "description": "Show Unicode Character",
+  "description": "Show Unicode Character⚽",
+  "icon": "images/icon.png",
   "keywords": [
     "vscode",
-    "Unicode",
-    "deta"
+    "Unicode"
   ],
-  "author": "1risW",
-  "icon": "images/icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/Erica-Iris/unicode-show.git"
-  },
-  "publisher": "1risW",
-  "version": "0.0.2",
-  "engines": {
-    "vscode": "^1.77.0"
   },
   "categories": [
     "Other"
@@ -28,6 +26,10 @@
       {
         "command": "unicode-show.showUnicode",
         "title": "Show Unicode Charater"
+      },
+      {
+        "command": "unicode-show.hoverPanel",
+        "title": "show hover panel"
       }
     ],
     "keybindings": [
@@ -37,7 +39,25 @@
         "mac": "cmd+alt+u",
         "when": "editorTextFocus && !editorReadonly"
       }
-    ]
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "when": "editorTextFocus && !editorReadonly",
+          "command": "unicode-show.showUnicode",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "unicode-show": {
+        "showUnicode": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show Unicode Charater"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

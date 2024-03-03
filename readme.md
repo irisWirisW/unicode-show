@@ -6,12 +6,17 @@ The function of this extension is to select a piece of unicode code and then dis
 
 ## Support Format
 
- - U+XXXXXX
- - \uXXXX
- - \UXXXXXXXX
- - \xXX
- - &#XXX
- - &#xXXXX
+- U+XXXXXX
+- \uXXXX
+- \UXXXXXXXX
+- \xXX
+- &#XXX
+- &#xXXXX
+
+## Support encode
+
+- UTF-8
+- Unicode
 
 ## Usage
 
@@ -19,5 +24,5 @@ Select the unicode code, then press the shortcut key `ctrl+alt+u`, use `cmd+alt+
 
 ## TODO
 
- - [ ] Add a suspended window display
- - [ ] Display in the status bar below
+- [ ] Add a suspended window display
+- [ ] Display in the status bar below
