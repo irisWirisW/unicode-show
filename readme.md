@@ -30,5 +30,5 @@ Select the unicode code, then press the shortcut key `ctrl+alt+u`, use `cmd+alt+
 
 ## TODO
 
-- [ ] Add a suspended window display
+- [x] Add a suspended window display
 - [ ] Display in the status bar below

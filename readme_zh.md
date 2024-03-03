@@ -34,5 +34,5 @@
 
 ## TODO
 
-- [x] Add a suspended window display
-- [ ] Display in the status bar below
+- [x] 添加悬浮提示
+- [ ] 在下方状态栏显示
