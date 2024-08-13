@@ -14,7 +14,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 
 	const hoverDisposable = vscode.languages.registerHoverProvider(
-		["python", "typescript", "javascript", "vue"],
+		["python", "javascript", "typescript", "markdown", "plaintext"],
 		{
 			async provideHover(document, position, token) {
 				const range = document.getWordRangeAtPosition(position);
@@ -32,4 +32,6 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(...disposable, hoverDisposable);
 }
 
-export function deactivate() { }
+export function deactivate() {
+	console.log("Unicode Tools deactivated.")
+}

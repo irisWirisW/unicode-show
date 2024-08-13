@@ -19,6 +19,9 @@
   "categories": [
     "Other"
   ],
+  "bugs": {
+    "url": "https://github.com/espresso3389/unicode-normalizer-vscode/issues"
+  },
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
@@ -26,10 +29,6 @@
       {
         "command": "unicode-show.showUnicode",
         "title": "Show Unicode Charater"
-      },
-      {
-        "command": "unicode-show.hoverPanel",
-        "title": "show hover panel"
       }
     ],
     "keybindings": [
