@@ -1,6 +1,6 @@
 {
   "name": "unicode-show",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publisher": "1risW",
   "engines": {
     "vscode": "^1.77.0"
@@ -14,13 +14,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Erica-Iris/unicode-show.git"
+    "url": "https://github.com/irisWirisW/unicode-show.git"
   },
   "categories": [
     "Other"
   ],
   "bugs": {
-    "url": "https://github.com/Erica-Iris/unicode-show/issues"
+    "url": "https://github.com/irisWirisW/unicode-show/issues"
   },
   "activationEvents": [],
   "main": "./out/extension.js",
@@ -36,7 +36,7 @@
         "command": "unicode-show.showUnicode",
         "key": "ctrl+alt+u",
         "mac": "cmd+alt+u",
-        "when": "editorTextFocus && !editorReadonly"
+        "when": "editorTextFocus"
       }
     ],
     "menus": {
