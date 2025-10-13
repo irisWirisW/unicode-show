@@ -20,7 +20,7 @@
     "Other"
   ],
   "bugs": {
-    "url": "https://github.com/espresso3389/unicode-normalizer-vscode/issues"
+    "url": "https://github.com/Erica-Iris/unicode-show/issues"
   },
   "activationEvents": [],
   "main": "./out/extension.js",
@@ -28,7 +28,7 @@
     "commands": [
       {
         "command": "unicode-show.showUnicode",
-        "title": "Show Unicode Charater"
+        "title": "Show Unicode Character"
       }
     ],
     "keybindings": [
@@ -53,7 +53,7 @@
         "showUnicode": {
           "type": "boolean",
           "default": true,
-          "description": "Show Unicode Charater"
+          "description": "Show Unicode Character"
         }
       }
     }
