@@ -9,7 +9,7 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-0.0.4-green.svg)](package.json)
 
-![效果展示](./images/Resources/悬浮提示显示字符.png)
+![效果展示](./Resources/悬浮提示显示字符.png)
 
 </div>
 
@@ -94,7 +94,7 @@ U+4E2D     → 中  (汉字)
 
 ```bash
 # 克隆仓库
-git clone https://github.com/Erica-Iris/unicode-show.git
+git clone https://github.com/irisWirisW/unicode-show.git
 cd unicode-show
 
 # 安装依赖
@@ -144,14 +144,14 @@ npm run compile
 
 ## 📮 联系方式
 
-- **问题反馈**: [GitHub Issues](https://github.com/Erica-Iris/unicode-show/issues)
-- **项目仓库**: [GitHub](https://github.com/Erica-Iris/unicode-show)
+- **问题反馈**: [GitHub Issues](https://github.com/irisWirisW/unicode-show/issues)
+- **项目仓库**: [GitHub](https://github.com/irisWirisW/unicode-show)
 
 ---
 
 <div align="center">
 
-由 [1ris_W](https://github.com/Erica-Iris) 用 ❤️ 制作
+由 [1ris_W](https://github.com/irisWirisW) 用 ❤️ 制作
 
 **如果觉得这个扩展有帮助，请在 GitHub 上给个 ⭐！**
 

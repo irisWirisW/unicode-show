@@ -94,7 +94,7 @@ Future versions may include customizable options.
 
 ```bash
 # Clone the repository
-git clone https://github.com/Erica-Iris/unicode-show.git
+git clone https://github.com/irisWirisW/unicode-show.git
 cd unicode-show
 
 # Install dependencies
@@ -144,14 +144,14 @@ Inspired by the need to quickly view Unicode characters while coding.
 
 ## 📮 Contact
 
-- **Issues**: [GitHub Issues](https://github.com/Erica-Iris/unicode-show/issues)
-- **Repository**: [GitHub](https://github.com/Erica-Iris/unicode-show)
+- **Issues**: [GitHub Issues](https://github.com/irisWirisW/unicode-show/issues)
+- **Repository**: [GitHub](https://github.com/irisWirisW/unicode-show)
 
 ---
 
 <div align="center">
 
-Made with ❤️ by [1ris_W](https://github.com/Erica-Iris)
+Made with ❤️ by [1ris_W](https://github.com/irisWirisW)
 
 **If you find this extension helpful, please give it a ⭐ on GitHub!**
 

@@ -7,7 +7,7 @@
   },
   "displayName": "unicode-show",
   "description": "Show Unicode Character⚽",
-  "icon": "images/icon.png",
+  "icon": "Resources/icon.png",
   "keywords": [
     "vscode",
     "Unicode"
