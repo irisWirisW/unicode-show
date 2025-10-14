@@ -9,7 +9,7 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-0.0.3-green.svg)](package.json)
 
-![Demo](./images/Resources/悬浮提示显示字符.png)
+![Demo](./Resources/悬浮提示显示字符.png)
 
 </div>
 
