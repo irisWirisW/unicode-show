@@ -25,10 +25,37 @@
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "unicode-tools",
+          "title": "Unicode Tools",
+          "icon": "$(symbol-misc)"
+        }
+      ]
+    },
+    "views": {
+      "unicode-tools": [
+        {
+          "id": "unicodeExplorer",
+          "name": "Unicode 工具"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "unicode-show.showUnicode",
         "title": "Show Unicode Character"
+      },
+      {
+        "command": "unicode-show.openRandomUnicode",
+        "title": "Random Unicode Generator",
+        "icon": "$(symbol-misc)"
+      },
+      {
+        "command": "unicode-show.openUnicodeViewer",
+        "title": "Unicode Viewer",
+        "icon": "$(book)"
       }
     ],
     "keybindings": [

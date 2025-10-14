@@ -1,0 +1,55 @@
+import * as vscode from 'vscode';
+
+export class UnicodeTreeItem extends vscode.TreeItem {
+    constructor(
+        public readonly label: string,
+        public readonly collapsibleState: vscode.TreeItemCollapsibleState,
+        public readonly command?: vscode.Command,
+        public readonly iconPath?: vscode.ThemeIcon
+    ) {
+        super(label, collapsibleState);
+        this.tooltip = this.label;
+    }
+}
+
+export class UnicodeTreeProvider implements vscode.TreeDataProvider<UnicodeTreeItem> {
+    private _onDidChangeTreeData: vscode.EventEmitter<UnicodeTreeItem | undefined | null | void> = new vscode.EventEmitter<UnicodeTreeItem | undefined | null | void>();
+    readonly onDidChangeTreeData: vscode.Event<UnicodeTreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
+
+    refresh(): void {
+        this._onDidChangeTreeData.fire();
+    }
+
+    getTreeItem(element: UnicodeTreeItem): vscode.TreeItem {
+        return element;
+    }
+
+    getChildren(element?: UnicodeTreeItem): Thenable<UnicodeTreeItem[]> {
+        if (!element) {
+            // 根级别的项目
+            return Promise.resolve([
+                new UnicodeTreeItem(
+                    '🎲 随机 Unicode 生成器',
+                    vscode.TreeItemCollapsibleState.None,
+                    {
+                        command: 'unicode-show.openRandomUnicode',
+                        title: '打开随机 Unicode 生成器',
+                        arguments: []
+                    },
+                    new vscode.ThemeIcon('symbol-misc')
+                ),
+                new UnicodeTreeItem(
+                    '📖 Unicode 查看器',
+                    vscode.TreeItemCollapsibleState.None,
+                    {
+                        command: 'unicode-show.openUnicodeViewer',
+                        title: '打开 Unicode 查看器',
+                        arguments: []
+                    },
+                    new vscode.ThemeIcon('book')
+                )
+            ]);
+        }
+        return Promise.resolve([]);
+    }
+}
