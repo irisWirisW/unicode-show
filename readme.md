@@ -109,13 +109,13 @@ npm run compile
 
 ### Testing
 
-See [HOW_TO_TEST.md](./HOW_TO_TEST.md) for detailed testing instructions.
+See [HOW_TO_TEST.md](./docs/HOW_TO_TEST.md) for detailed testing instructions.
 
 ## 📖 Documentation
 
-- [Debug Guide](./DEBUG_GUIDE.md) - How to debug the extension
-- [Test Cases](./TEST_CASES.md) - Complete list of test cases
-- [How to Test](./HOW_TO_TEST.md) - Testing procedures
+- [Debug Guide](./docs/DEBUG_GUIDE.md) - How to debug the extension
+- [Test Cases](./docs/TEST_CASES.md) - Complete list of test cases
+- [How to Test](./docs/HOW_TO_TEST.md) - Testing procedures
 
 ## 🗺️ Roadmap
 

@@ -109,13 +109,13 @@ npm run compile
 
 ### 测试
 
-详细的测试说明请查看 [HOW_TO_TEST.md](./HOW_TO_TEST.md)。
+详细的测试说明请查看 [HOW_TO_TEST.md](./docs/HOW_TO_TEST.md)。
 
 ## 📖 文档
 
-- [调试指南](./DEBUG_GUIDE.md) - 如何调试扩展
-- [测试用例](./TEST_CASES.md) - 完整的测试用例列表
-- [如何测试](./HOW_TO_TEST.md) - 测试步骤说明
+- [调试指南](./docs/DEBUG_GUIDE.md) - 如何调试扩展
+- [测试用例](./docs/TEST_CASES.md) - 完整的测试用例列表
+- [如何测试](./docs/HOW_TO_TEST.md) - 测试步骤说明
 
 ## 🗺️ 开发路线图
 
