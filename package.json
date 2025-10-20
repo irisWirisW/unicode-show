@@ -30,9 +30,10 @@
         {
           "id": "unicode-tools",
           "title": "Unicode Tools",
-          "icon": "$(symbol-misc)"
+          "icon": "$(add)"
         }
-      ]
+      ],
+      "panel": []
     },
     "views": {
       "unicode-tools": [
@@ -55,13 +56,19 @@
       {
         "command": "unicode-show.openUnicodeViewer",
         "title": "Unicode Viewer",
-        "icon": "$(book)"
+        "icon": "$(window)"
       }
     ],
     "keybindings": [
       {
         "command": "unicode-show.showUnicode",
         "key": "ctrl+alt+u",
+        "mac": "cmd+alt+u",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "unicode-show.openRandomUnicode",
+        "key": "ctrl+alt+r",
         "mac": "cmd+alt+u",
         "when": "editorTextFocus"
       }

@@ -1,31 +1,12 @@
 import * as vscode from 'vscode';
+import { BaseWebviewPanel } from './baseWebviewPanel';
+import { UnicodeConverter } from './unicodeConverter';
 
-export class RandomUnicodePanel {
+export class RandomUnicodePanel extends BaseWebviewPanel {
     public static currentPanel: RandomUnicodePanel | undefined;
-    private readonly _panel: vscode.WebviewPanel;
-    private _disposables: vscode.Disposable[] = [];
 
     private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
-        this._panel = panel;
-
-        // 设置 webview 内容
-        this._panel.webview.html = this._getWebviewContent();
-
-        // 监听 webview 的消息
-        this._panel.webview.onDidReceiveMessage(
-            message => {
-                switch (message.command) {
-                    case 'generateRandom':
-                        this._generateRandomUnicode();
-                        break;
-                }
-            },
-            null,
-            this._disposables
-        );
-
-        // 当 panel 被关闭时清理
-        this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
+        super(panel);
     }
 
     public static createOrShow(extensionUri: vscode.Uri) {
@@ -49,41 +30,32 @@ export class RandomUnicodePanel {
         RandomUnicodePanel.currentPanel = new RandomUnicodePanel(panel, extensionUri);
     }
 
-    private _generateRandomUnicode() {
-        // 生成随机 Unicode 码点
-        // Unicode 范围：0x0000 到 0x10FFFF
-        // 为了生成更有意义的字符，我们选择几个常用区域
-        const ranges = [
-            { start: 0x0020, end: 0x007E },   // 基本拉丁字母
-            { start: 0x00A0, end: 0x00FF },   // 拉丁补充-1
-            { start: 0x0370, end: 0x03FF },   // 希腊字母
-            { start: 0x0400, end: 0x04FF },   // 西里尔字母
-            { start: 0x4E00, end: 0x9FFF },   // 中日韩统一表意文字
-            { start: 0x1F300, end: 0x1F9FF }, // 表情符号和图形符号
-            { start: 0x2600, end: 0x26FF },   // 杂项符号
-            { start: 0x2700, end: 0x27BF },   // 装饰符号
-            { start: 0x1F600, end: 0x1F64F }, // 表情符号
-        ];
-
-        // 随机选择一个范围
-        const range = ranges[Math.floor(Math.random() * ranges.length)];
-        const codePoint = Math.floor(Math.random() * (range.end - range.start + 1)) + range.start;
-
-        try {
-            const char = String.fromCodePoint(codePoint);
-            const unicodeHex = codePoint.toString(16).toUpperCase().padStart(4, '0');
-
-            // 发送结果回 webview
-            this._panel.webview.postMessage({
-                command: 'showUnicode',
-                char: char,
-                codePoint: codePoint,
-                unicodeHex: unicodeHex,
-                format: `U+${unicodeHex}`
-            });
-        } catch (error) {
-            vscode.window.showErrorMessage(`生成 Unicode 失败: ${error}`);
+    protected handleMessage(message: any): void {
+        switch (message.command) {
+            case 'generateRandom':
+                this._generateRandomUnicode();
+                break;
         }
+    }
+
+    private _generateRandomUnicode() {
+        const result = UnicodeConverter.generateRandom();
+
+        if (result.success) {
+            this.postMessage({
+                command: 'showUnicode',
+                char: result.char,
+                codePoint: result.codePoint,
+                unicodeHex: result.unicodeHex,
+                format: result.format
+            });
+        } else {
+            vscode.window.showErrorMessage(result.error || '生成 Unicode 失败');
+        }
+    }
+
+    protected getWebviewContent(): string {
+        return this._getWebviewContent();
     }
 
     private _getWebviewContent(): string {
@@ -293,14 +265,7 @@ export class RandomUnicodePanel {
 
     public dispose() {
         RandomUnicodePanel.currentPanel = undefined;
-
+        super.dispose();
         this._panel.dispose();
-
-        while (this._disposables.length) {
-            const disposable = this._disposables.pop();
-            if (disposable) {
-                disposable.dispose();
-            }
-        }
     }
 }

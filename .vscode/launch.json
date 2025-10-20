@@ -7,7 +7,7 @@
       "request": "launch",
       "args": [
         "--extensionDevelopmentPath=${workspaceFolder}",
-        "${workspaceFolder}/TEST_CASES.md"
+        "${workspaceFolder}/src"
       ],
       "outFiles": [
         "${workspaceFolder}/out/**/*.js"

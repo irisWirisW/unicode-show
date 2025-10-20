@@ -1,32 +1,12 @@
 import * as vscode from 'vscode';
-import { showFromUnicodeText } from './showSymbolFromUnicodetext';
+import { BaseWebviewPanel } from './baseWebviewPanel';
+import { UnicodeConverter } from './unicodeConverter';
 
-export class UnicodeViewerPanel {
+export class UnicodeViewerPanel extends BaseWebviewPanel {
     public static currentPanel: UnicodeViewerPanel | undefined;
-    private readonly _panel: vscode.WebviewPanel;
-    private _disposables: vscode.Disposable[] = [];
 
     private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
-        this._panel = panel;
-
-        // 设置 webview 内容
-        this._panel.webview.html = this._getWebviewContent();
-
-        // 监听 webview 的消息
-        this._panel.webview.onDidReceiveMessage(
-            message => {
-                switch (message.command) {
-                    case 'convertUnicode':
-                        this._convertUnicode(message.text);
-                        break;
-                }
-            },
-            null,
-            this._disposables
-        );
-
-        // 当 panel 被关闭时清理
-        this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
+        super(panel);
     }
 
     public static createOrShow(extensionUri: vscode.Uri) {
@@ -50,37 +30,44 @@ export class UnicodeViewerPanel {
         UnicodeViewerPanel.currentPanel = new UnicodeViewerPanel(panel, extensionUri);
     }
 
+    protected handleMessage(message: any): void {
+        switch (message.command) {
+            case 'convertUnicode':
+                this._convertUnicode(message.text);
+                break;
+        }
+    }
+
     private _convertUnicode(text: string) {
         if (!text || text.trim() === '') {
-            this._panel.webview.postMessage({
+            this.postMessage({
                 command: 'showError',
                 message: '请输入 Unicode 码点'
             });
             return;
         }
 
-        const result = showFromUnicodeText(text.trim());
+        const result = UnicodeConverter.convert(text.trim());
 
-        // 判断是否转换成功
-        if (result.includes('不是标准的') || result.includes('无效的') || result.includes('无法转换') || result.includes('没有输入')) {
-            this._panel.webview.postMessage({
-                command: 'showError',
-                message: result
+        if (result.success) {
+            this.postMessage({
+                command: 'showResult',
+                char: result.char,
+                codePoint: result.codePoint,
+                unicodeHex: result.unicodeHex,
+                format: result.format,
+                input: text.trim()
             });
         } else {
-            // 获取码点信息
-            const codePoint = result.codePointAt(0);
-            if (codePoint !== undefined) {
-                this._panel.webview.postMessage({
-                    command: 'showResult',
-                    char: result,
-                    codePoint: codePoint,
-                    unicodeHex: codePoint.toString(16).toUpperCase().padStart(4, '0'),
-                    format: `U+${codePoint.toString(16).toUpperCase().padStart(4, '0')}`,
-                    input: text.trim()
-                });
-            }
+            this.postMessage({
+                command: 'showError',
+                message: result.error
+            });
         }
+    }
+
+    protected getWebviewContent(): string {
+        return this._getWebviewContent();
     }
 
     private _getWebviewContent(): string {
@@ -412,14 +399,7 @@ export class UnicodeViewerPanel {
 
     public dispose() {
         UnicodeViewerPanel.currentPanel = undefined;
-
+        super.dispose();
         this._panel.dispose();
-
-        while (this._disposables.length) {
-            const disposable = this._disposables.pop();
-            if (disposable) {
-                disposable.dispose();
-            }
-        }
     }
 }

@@ -3,6 +3,7 @@ import { showFromUnicodeText } from './showSymbolFromUnicodetext';
 import { RandomUnicodePanel } from './randomUnicodePanel';
 import { UnicodeViewerPanel } from './unicodeViewerPanel';
 import { UnicodeTreeProvider } from './unicodeTreeProvider';
+import { UnicodeConverter } from './unicodeConverter';
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('Unicode Tools activated.');
