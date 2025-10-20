@@ -4,10 +4,11 @@
 
 **A powerful VSCode extension for viewing Unicode characters from their code points**
 
-[English](#) | [中文](./readme_zh.md)
+English | [中文](./docs/readme_zh.md)
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-0.0.3-green.svg)](package.json)
+[![Version](https://img.shields.io/badge/version-0.1.0-green.svg)](package.json)
+[![VSCode Marketplace](https://img.shields.io/badge/VSCode-Marketplace-blue?logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=1risW.unicode-show)
 
 ![Demo](./Resources/悬浮提示显示字符.png)
 

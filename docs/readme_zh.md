@@ -4,12 +4,13 @@
 
 **一个强大的 VSCode 扩展，用于查看 Unicode 编码对应的字符**
 
-[English](./readme.md) | [中文](#)
+[English](../readme.md) | 中文
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-0.0.4-green.svg)](package.json)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](../LICENSE)
+[![Version](https://img.shields.io/badge/version-0.1.0-green.svg)](../package.json)
+[![VSCode Marketplace](https://img.shields.io/badge/VSCode-Marketplace-blue?logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=1risW.unicode-show)
 
-![效果展示](./Resources/悬浮提示显示字符.png)
+![效果展示](../Resources/悬浮提示显示字符.png)
 
 </div>
 
@@ -109,13 +110,13 @@ npm run compile
 
 ### 测试
 
-详细的测试说明请查看 [HOW_TO_TEST.md](./docs/HOW_TO_TEST.md)。
+详细的测试说明请查看 [HOW_TO_TEST.md](./HOW_TO_TEST.md)。
 
 ## 📖 文档
 
-- [调试指南](./docs/DEBUG_GUIDE.md) - 如何调试扩展
-- [测试用例](./docs/TEST_CASES.md) - 完整的测试用例列表
-- [如何测试](./docs/HOW_TO_TEST.md) - 测试步骤说明
+- [调试指南](./DEBUG_GUIDE.md) - 如何调试扩展
+- [测试用例](./TEST_CASES.md) - 完整的测试用例列表
+- [如何测试](./HOW_TO_TEST.md) - 测试步骤说明
 
 ## 🗺️ 开发路线图
 
@@ -136,7 +137,7 @@ npm run compile
 
 ## 📄 许可证
 
-本项目采用 MIT 许可证 - 详见 [LICENSE](LICENSE) 文件。
+本项目采用 MIT 许可证 - 详见 [LICENSE](../LICENSE) 文件。
 
 ## 🙏 致谢
 
