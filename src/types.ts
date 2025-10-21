@@ -1,3 +1,5 @@
+import * as vscode from 'vscode';
+
 /**
  * Unicode 转换结果类型
  */
@@ -20,12 +22,55 @@ export interface UnicodeRange {
 }
 
 /**
- * Webview 消息类型
+ * Webview 消息基础类型
  */
 export interface WebviewMessage {
     command: string;
-    [key: string]: any;
 }
+
+/**
+ * 生成随机Unicode的消息
+ */
+export interface GenerateRandomMessage extends WebviewMessage {
+    command: 'generateRandom';
+}
+
+/**
+ * 转换Unicode的消息
+ */
+export interface ConvertUnicodeMessage extends WebviewMessage {
+    command: 'convertUnicode';
+    text: string;
+}
+
+/**
+ * 显示Unicode结果的消息
+ */
+export interface ShowUnicodeMessage extends WebviewMessage {
+    command: 'showUnicode' | 'showResult';
+    char: string;
+    codePoint: number;
+    unicodeHex: string;
+    format: string;
+    input?: string;
+}
+
+/**
+ * 显示错误的消息
+ */
+export interface ShowErrorMessage extends WebviewMessage {
+    command: 'showError';
+    message: string;
+}
+
+/**
+ * 所有可能的Webview消息类型
+ */
+export type AnyWebviewMessage =
+    | GenerateRandomMessage
+    | ConvertUnicodeMessage
+    | ShowUnicodeMessage
+    | ShowErrorMessage;
 
 /**
  * Unicode 显示信息
@@ -35,4 +80,12 @@ export interface UnicodeDisplayInfo {
     codePoint: number;
     unicodeHex: string;
     format: string;
+}
+
+/**
+ * Webview Panel 接口
+ */
+export interface IWebviewPanel {
+    readonly panel: vscode.WebviewPanel;
+    dispose(): void;
 }
