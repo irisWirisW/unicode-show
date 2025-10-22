@@ -4,11 +4,11 @@
  */
 
 export class HtmlTemplates {
-    /**
-     * 获取公共样式
-     */
-    static getCommonStyles(): string {
-        return `
+	/**
+	 * 获取公共样式
+	 */
+	static getCommonStyles(): string {
+		return `
             body {
                 padding: 20px;
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -155,13 +155,13 @@ export class HtmlTemplates {
                 text-align: center;
             }
         `;
-    }
+	}
 
-    /**
-     * 获取公共脚本（复制按钮功能）
-     */
-    static getCopyButtonScript(): string {
-        return `
+	/**
+	 * 获取公共脚本（复制按钮功能）
+	 */
+	static getCopyButtonScript(): string {
+		return `
             document.getElementById('copyBtn')?.addEventListener('click', () => {
                 const char = document.getElementById('unicodeChar').textContent;
                 navigator.clipboard.writeText(char).then(() => {
@@ -174,20 +174,20 @@ export class HtmlTemplates {
                 });
             });
         `;
-    }
+	}
 
-    /**
-     * 生成基础的HTML文档框架
-     */
-    static createBaseHtml(title: string, content: string, extraStyles: string = '', extraScripts: string = ''): string {
-        return `<!DOCTYPE html>
+	/**
+	 * 生成基础的HTML文档框架
+	 */
+	static createBaseHtml(title: string, content: string, extraStyles: string = "", extraScripts: string = ""): string {
+		return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${title}</title>
     <style>
-        ${this.getCommonStyles()}
+        ${HtmlTemplates.getCommonStyles()}
         ${extraStyles}
     </style>
 </head>
@@ -195,25 +195,27 @@ export class HtmlTemplates {
     ${content}
     <script>
         const vscode = acquireVsCodeApi();
-        ${this.getCopyButtonScript()}
+        ${HtmlTemplates.getCopyButtonScript()}
         ${extraScripts}
     </script>
 </body>
 </html>`;
-    }
+	}
 
-    /**
-     * 生成结果展示容器的HTML
-     */
-    static createResultContainer(showInput: boolean = false): string {
-        const inputRow = showInput ? `
+	/**
+	 * 生成结果展示容器的HTML
+	 */
+	static createResultContainer(showInput: boolean = false): string {
+		const inputRow = showInput
+			? `
             <div class="info-row">
                 <span class="info-label">输入格式:</span>
                 <span class="info-value" id="inputFormat"></span>
             </div>
-        ` : '';
+        `
+			: "";
 
-        return `
+		return `
             <div id="resultContainer" class="result-container">
                 <div class="unicode-display" id="unicodeChar"></div>
                 <div class="unicode-info">
@@ -236,18 +238,18 @@ export class HtmlTemplates {
                 </div>
             </div>
         `;
-    }
+	}
 
-    /**
-     * 创建提示框HTML
-     */
-    static createTipsBox(title: string, tips: string[]): string {
-        const tipsHtml = tips.map(tip => `<p>• ${tip}</p>`).join('\n');
-        return `
+	/**
+	 * 创建提示框HTML
+	 */
+	static createTipsBox(title: string, tips: string[]): string {
+		const tipsHtml = tips.map(tip => `<p>• ${tip}</p>`).join("\n");
+		return `
             <div class="tips">
                 <h3>${title}</h3>
                 ${tipsHtml}
             </div>
         `;
-    }
+	}
 }

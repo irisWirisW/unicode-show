@@ -1,65 +1,60 @@
-import * as vscode from 'vscode';
-import { BaseWebviewPanel } from './baseWebviewPanel';
-import { UnicodeConverter } from './unicodeConverter';
-import { AnyWebviewMessage, ShowUnicodeMessage } from './types';
-import { HtmlTemplates } from './utils/htmlTemplates';
-import { MESSAGE_COMMANDS, WEBVIEW_PANELS } from './constants';
-import { logger } from './utils/logger';
+import * as vscode from "vscode";
+import { BaseWebviewPanel } from "./baseWebviewPanel";
+import { MESSAGE_COMMANDS, WEBVIEW_PANELS } from "./constants";
+import type { AnyWebviewMessage, ShowUnicodeMessage } from "./types";
+import { UnicodeConverter } from "./unicodeConverter";
+import { HtmlTemplates } from "./utils/htmlTemplates";
+import { logger } from "./utils/logger";
 
 export class RandomUnicodePanel extends BaseWebviewPanel {
-    public static currentPanel: RandomUnicodePanel | undefined;
+	public static currentPanel: RandomUnicodePanel | undefined;
 
-    private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
-        super(panel);
-    }
+	private constructor(panel: vscode.WebviewPanel, _extensionUri: vscode.Uri) {
+		super(panel);
+	}
 
-    public static createOrShow(extensionUri: vscode.Uri): void {
-        // 如果已经存在面板，则显示它
-        if (RandomUnicodePanel.currentPanel) {
-            RandomUnicodePanel.currentPanel._panel.reveal(vscode.ViewColumn.One);
-            return;
-        }
+	public static createOrShow(extensionUri: vscode.Uri): void {
+		// 如果已经存在面板，则显示它
+		if (RandomUnicodePanel.currentPanel) {
+			RandomUnicodePanel.currentPanel._panel.reveal(vscode.ViewColumn.One);
+			return;
+		}
 
-        // 创建新的面板
-        const panel = vscode.window.createWebviewPanel(
-            WEBVIEW_PANELS.RANDOM_UNICODE,
-            '🎲 随机 Unicode',
-            vscode.ViewColumn.One,
-            {
-                enableScripts: true,
-                retainContextWhenHidden: true
-            }
-        );
+		// 创建新的面板
+		const panel = vscode.window.createWebviewPanel(WEBVIEW_PANELS.RANDOM_UNICODE, "🎲 随机 Unicode", vscode.ViewColumn.One, {
+			enableScripts: true,
+			retainContextWhenHidden: true,
+		});
 
-        RandomUnicodePanel.currentPanel = new RandomUnicodePanel(panel, extensionUri);
-    }
+		RandomUnicodePanel.currentPanel = new RandomUnicodePanel(panel, extensionUri);
+	}
 
-    protected handleMessage(message: AnyWebviewMessage): void {
-        if (message.command === MESSAGE_COMMANDS.GENERATE_RANDOM) {
-            this.generateRandomUnicode();
-        }
-    }
+	protected handleMessage(message: AnyWebviewMessage): void {
+		if (message.command === MESSAGE_COMMANDS.GENERATE_RANDOM) {
+			this.generateRandomUnicode();
+		}
+	}
 
-    private generateRandomUnicode(): void {
-        const result = UnicodeConverter.generateRandom();
+	private generateRandomUnicode(): void {
+		const result = UnicodeConverter.generateRandom();
 
-        if (result.success && result.char && result.codePoint !== undefined && result.unicodeHex && result.format) {
-            const message: ShowUnicodeMessage = {
-                command: MESSAGE_COMMANDS.SHOW_UNICODE,
-                char: result.char,
-                codePoint: result.codePoint,
-                unicodeHex: result.unicodeHex,
-                format: result.format
-            };
-            this.postMessage(message);
-        } else {
-            vscode.window.showErrorMessage(result.error || '生成 Unicode 失败');
-            logger.error('Failed to generate random unicode:', result.error);
-        }
-    }
+		if (result.success && result.char && result.codePoint !== undefined && result.unicodeHex && result.format) {
+			const message: ShowUnicodeMessage = {
+				command: MESSAGE_COMMANDS.SHOW_UNICODE,
+				char: result.char,
+				codePoint: result.codePoint,
+				unicodeHex: result.unicodeHex,
+				format: result.format,
+			};
+			this.postMessage(message);
+		} else {
+			vscode.window.showErrorMessage(result.error || "生成 Unicode 失败");
+			logger.error("Failed to generate random unicode:", result.error);
+		}
+	}
 
-    protected getWebviewContent(): string {
-        const content = `
+	protected getWebviewContent(): string {
+		const content = `
             <div class="container">
                 <h1>🎲 随机 Unicode 字符生成器</h1>
 
@@ -69,16 +64,11 @@ export class RandomUnicodePanel extends BaseWebviewPanel {
 
                 ${HtmlTemplates.createResultContainer(false)}
 
-                ${HtmlTemplates.createTipsBox('💡 使用提示', [
-                    '点击上方按钮生成随机 Unicode 字符',
-                    '生成的字符来自多个 Unicode 区域，包括基本字符、符号、表情等',
-                    '点击"复制字符"按钮可以将字符复制到剪贴板',
-                    '你可以使用本插件的悬停功能查看任何 Unicode 码点对应的字符'
-                ])}
+                ${HtmlTemplates.createTipsBox("💡 使用提示", ["点击上方按钮生成随机 Unicode 字符", "生成的字符来自多个 Unicode 区域，包括基本字符、符号、表情等", '点击"复制字符"按钮可以将字符复制到剪贴板', "你可以使用本插件的悬停功能查看任何 Unicode 码点对应的字符"])}
             </div>
         `;
 
-        const extraStyles = `
+		const extraStyles = `
             .tips {
                 margin-top: 30px;
                 padding: 15px;
@@ -95,7 +85,7 @@ export class RandomUnicodePanel extends BaseWebviewPanel {
             }
         `;
 
-        const extraScripts = `
+		const extraScripts = `
             document.getElementById('generateBtn').addEventListener('click', () => {
                 vscode.postMessage({ command: '${MESSAGE_COMMANDS.GENERATE_RANDOM}' });
             });
@@ -112,12 +102,12 @@ export class RandomUnicodePanel extends BaseWebviewPanel {
             });
         `;
 
-        return HtmlTemplates.createBaseHtml('随机 Unicode 生成器', content, extraStyles, extraScripts);
-    }
+		return HtmlTemplates.createBaseHtml("随机 Unicode 生成器", content, extraStyles, extraScripts);
+	}
 
-    public dispose(): void {
-        RandomUnicodePanel.currentPanel = undefined;
-        super.dispose();
-        this._panel.dispose();
-    }
+	public dispose(): void {
+		RandomUnicodePanel.currentPanel = undefined;
+		super.dispose();
+		this._panel.dispose();
+	}
 }
