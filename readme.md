@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🔤 Unicode Shower
+# Unicode Shower
 
 **A powerful VSCode extension for viewing Unicode characters from their code points**
 
@@ -16,15 +16,39 @@ English | [中文](./docs/readme_zh.md)
 
 ---
 
-## ✨ Features
+## Table of Contents
 
-- 🎯 **Hover to View**: Simply hover over a Unicode code to see the character
-- ⌨️ **Keyboard Shortcut**: Quick access with `⌘ Cmd + ⌥ Option + U` (macOS) or `Ctrl+Alt+U` (Windows/Linux)
-- 🖱️ **Right-Click Menu**: Show Unicode character from context menu
-- 🔄 **Multiple Formats**: Supports 6+ common Unicode notation formats
-- 🌈 **Universal Support**: Works with emojis, CJK characters, symbols, and more
+- [Unicode Shower](#unicode-shower)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Supported Formats](#supported-formats)
+  - [Quick Start](#quick-start)
+    - [Installation](#installation)
+    - [Usage](#usage)
+  - [Examples](#examples)
+  - [Supported Languages](#supported-languages)
+  - [Configuration](#configuration)
+  - [Development](#development)
+    - [Build from Source](#build-from-source)
+    - [Testing](#testing)
+  - [Documentation](#documentation)
+  - [Roadmap](#roadmap)
+  - [Contributing](#contributing)
+  - [License](#license)
+  - [Acknowledgments](#acknowledgments)
+  - [Contact](#contact)
 
-## 📋 Supported Formats
+---
+
+## Features
+
+- **Hover to View**: Simply hover over a Unicode code to see the character
+- **Keyboard Shortcut**: Quick access with `⌘ Cmd + ⌥ Option + U` (macOS) or `Ctrl+Alt+U` (Windows/Linux)
+- **Right-Click Menu**: Show Unicode character from context menu
+- **Multiple Formats**: Supports 6+ common Unicode notation formats
+- **Universal Support**: Works with emojis, CJK characters, symbols, and more
+
+## Supported Formats
 
 | Format | Example | Result | Description |
 |--------|---------|--------|-------------|
@@ -36,7 +60,7 @@ English | [中文](./docs/readme_zh.md)
 | `&#xXXXX;` | `&#x1F600;` | 😀 | HTML hex entity |
 | Pure Hex | `1F600` | 😀 | Raw hexadecimal (4+ digits) |
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Installation
 
@@ -61,7 +85,7 @@ English | [中文](./docs/readme_zh.md)
 1. Select a Unicode code
 2. Right-click → "Show Unicode Character"
 
-## 📝 Examples
+## Examples
 
 Try these in any supported file type (Python, JavaScript, TypeScript, Markdown, Plain Text):
 
@@ -74,7 +98,7 @@ U+4E2D     → 中  (Chinese character)
 1F680      → 🚀  (Rocket)
 ```
 
-## 🎨 Supported Languages
+## Supported Languages
 
 The extension works with the following file types:
 - Python (`.py`)
@@ -83,13 +107,13 @@ The extension works with the following file types:
 - Markdown (`.md`)
 - Plain Text (`.txt`)
 
-## ⚙️ Configuration
+## Configuration
 
 Currently, the extension works out of the box with no configuration needed.
 
 Future versions may include customizable options.
 
-## 🛠️ Development
+## Development
 
 ### Build from Source
 
@@ -112,13 +136,13 @@ npm run compile
 
 See [HOW_TO_TEST.md](./docs/HOW_TO_TEST.md) for detailed testing instructions.
 
-## 📖 Documentation
+## Documentation
 
 - [Debug Guide](./docs/DEBUG_GUIDE.md) - How to debug the extension
 - [Test Cases](./docs/TEST_CASES.md) - Complete list of test cases
 - [How to Test](./docs/HOW_TO_TEST.md) - Testing procedures
 
-## 🗺️ Roadmap
+## Roadmap
 
 - [x] Hover tooltip display
 - [x] Support multiple Unicode formats
@@ -128,22 +152,22 @@ See [HOW_TO_TEST.md](./docs/HOW_TO_TEST.md) for detailed testing instructions.
 - [ ] Custom format configuration
 - [ ] Batch conversion
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Feel free to:
 - Report bugs
 - Suggest new features
 - Submit pull requests
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 Inspired by the need to quickly view Unicode characters while coding.
 
-## 📮 Contact
+## Contact
 
 - **Issues**: [GitHub Issues](https://github.com/irisWirisW/unicode-show/issues)
 - **Repository**: [GitHub](https://github.com/irisWirisW/unicode-show)
@@ -152,8 +176,8 @@ Inspired by the need to quickly view Unicode characters while coding.
 
 <div align="center">
 
-Made with ❤️ by [1ris_W](https://github.com/irisWirisW)
+Made by [1ris_W](https://github.com/irisWirisW)
 
-**If you find this extension helpful, please give it a ⭐ on GitHub!**
+**If you find this extension helpful, please give it a star on GitHub!**
 
 </div>
