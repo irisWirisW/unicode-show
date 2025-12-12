@@ -1,7 +1,8 @@
 import * as vscode from "vscode";
 import { BaseWebviewPanel } from "./baseWebviewPanel";
 import { MESSAGE_COMMANDS, WEBVIEW_PANELS } from "./constants";
-import type { AnyWebviewMessage, ConvertUnicodeMessage, ShowErrorMessage, ShowUnicodeMessage } from "./types";
+import type { AnyWebviewMessage, ShowErrorMessage, ShowUnicodeMessage } from "./types";
+import { isConvertUnicodeMessage } from "./types";
 import { UnicodeConverter } from "./unicodeConverter";
 import { HtmlTemplates } from "./utils/htmlTemplates";
 import { logger } from "./utils/logger";
@@ -30,9 +31,8 @@ export class UnicodeViewerPanel extends BaseWebviewPanel {
 	}
 
 	protected handleMessage(message: AnyWebviewMessage): void {
-		if (message.command === MESSAGE_COMMANDS.CONVERT_UNICODE) {
-			const convertMessage = message as ConvertUnicodeMessage;
-			this.convertUnicode(convertMessage.text);
+		if (isConvertUnicodeMessage(message)) {
+			this.convertUnicode(message.text);
 		}
 	}
 

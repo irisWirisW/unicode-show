@@ -106,42 +106,49 @@ function createHover(): vscode.Hover | undefined {
 }
 
 /**
+ * 转义 Markdown 特殊字符
+ */
+function escapeMarkdown(text: string): string {
+	return text.replace(/[\\`*_{}[\]()#+\-.!|]/g, "\\$&");
+}
+
+/**
  * 构建悬浮提示的 Markdown 内容
  */
 function buildHoverMarkdown(info: UnicodeCharacterInfo): vscode.MarkdownString {
 	const markdown = new vscode.MarkdownString();
-	markdown.supportHtml = true;
-	markdown.isTrusted = true;
+	markdown.supportHtml = false;
+	markdown.isTrusted = false;
 
-	// 显示字符
-	markdown.appendMarkdown(`# 字符: \`${info.char}\`\n\n`);
+	// 显示字符 (字符本身使用代码块包裹以避免解析)
+	markdown.appendMarkdown(`# 字符: \`${escapeMarkdown(info.char)}\`\n\n`);
 
 	// 基本信息
-	markdown.appendMarkdown(`### 📝 基本信息\n`);
-	markdown.appendMarkdown(`- **字符名称:** ${info.name}\n`);
-	markdown.appendMarkdown(`- **Unicode分类:** ${info.category} (${info.categoryDescription})\n`);
-	markdown.appendMarkdown(`- **脚本:** ${info.script}\n\n`);
+	markdown.appendMarkdown(`### 基本信息\n`);
+	markdown.appendMarkdown(`- **字符名称:** ${escapeMarkdown(info.name)}\n`);
+	markdown.appendMarkdown(`- **Unicode分类:** ${escapeMarkdown(info.category)} (${escapeMarkdown(info.categoryDescription)})\n`);
+	markdown.appendMarkdown(`- **脚本:** ${escapeMarkdown(info.script)}\n\n`);
 
 	// 码点信息
-	markdown.appendMarkdown(`### 🔢 码点信息\n`);
+	markdown.appendMarkdown(`### 码点信息\n`);
 	markdown.appendMarkdown(`- **十进制:** ${info.codePoint}\n`);
-	markdown.appendMarkdown(`- **十六进制:** U+${info.unicodeHex}\n`);
-	markdown.appendMarkdown(`- **二进制:** ${info.binary}\n\n`);
+	markdown.appendMarkdown(`- **十六进制:** U+${escapeMarkdown(info.unicodeHex)}\n`);
+	markdown.appendMarkdown(`- **二进制:** ${escapeMarkdown(info.binary)}\n\n`);
 
 	// 编码信息
-	markdown.appendMarkdown(`### 💾 编码格式\n`);
-	markdown.appendMarkdown(`- **UTF-8:** ${info.utf8Bytes}\n`);
-	markdown.appendMarkdown(`- **UTF-16:** ${info.utf16Bytes}\n`);
-	markdown.appendMarkdown(`- **JavaScript转义:** ${info.jsEscape}\n`);
+	markdown.appendMarkdown(`### 编码格式\n`);
+	markdown.appendMarkdown(`- **UTF-8:** ${escapeMarkdown(info.utf8Bytes)}\n`);
+	markdown.appendMarkdown(`- **UTF-16:** ${escapeMarkdown(info.utf16Bytes)}\n`);
+	markdown.appendMarkdown(`- **JavaScript转义:** ${escapeMarkdown(info.jsEscape)}\n`);
 	if (info.jsEscapeExtended) {
-		markdown.appendMarkdown(`- **JavaScript转义 (扩展):** ${info.jsEscapeExtended}\n`);
+		markdown.appendMarkdown(`- **JavaScript转义 (扩展):** ${escapeMarkdown(info.jsEscapeExtended)}\n`);
 	}
 	markdown.appendMarkdown(`\n`);
 
 	// HTML实体
-	markdown.appendMarkdown(`### 🌐 HTML实体\n`);
-	markdown.appendMarkdown(`- **十进制:** \`${info.htmlEntity}\`\n`);
-	markdown.appendMarkdown(`- **十六进制:** \`${info.htmlHexEntity}\`\n`);
+	markdown.appendMarkdown(`### HTML实体\n`);
+	markdown.appendMarkdown(`- **十进制:** \`${escapeMarkdown(info.htmlEntity)}\`\n`);
+	markdown.appendMarkdown(`- **十六进制:** \`${escapeMarkdown(info.htmlHexEntity)}\`\n`);
 
 	return markdown;
 }

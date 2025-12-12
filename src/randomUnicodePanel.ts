@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { BaseWebviewPanel } from "./baseWebviewPanel";
 import { MESSAGE_COMMANDS, WEBVIEW_PANELS } from "./constants";
 import type { AnyWebviewMessage, ShowUnicodeMessage } from "./types";
+import { isGenerateRandomMessage } from "./types";
 import { UnicodeConverter } from "./unicodeConverter";
 import { HtmlTemplates } from "./utils/htmlTemplates";
 import { logger } from "./utils/logger";
@@ -30,7 +31,7 @@ export class RandomUnicodePanel extends BaseWebviewPanel {
 	}
 
 	protected handleMessage(message: AnyWebviewMessage): void {
-		if (message.command === MESSAGE_COMMANDS.GENERATE_RANDOM) {
+		if (isGenerateRandomMessage(message)) {
 			this.generateRandomUnicode();
 		}
 	}

@@ -3,6 +3,15 @@
  * 提供统一的 HTML 模板管理
  */
 
+import * as crypto from "node:crypto";
+
+/**
+ * 生成用于 CSP 的随机 nonce
+ */
+function generateNonce(): string {
+	return crypto.randomBytes(16).toString("hex");
+}
+
 export class HtmlTemplates {
 	/**
 	 * 获取公共样式
@@ -180,11 +189,13 @@ export class HtmlTemplates {
 	 * 生成基础的HTML文档框架
 	 */
 	static createBaseHtml(title: string, content: string, extraStyles: string = "", extraScripts: string = ""): string {
+		const nonce = generateNonce();
 		return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'nonce-${nonce}';">
     <title>${title}</title>
     <style>
         ${HtmlTemplates.getCommonStyles()}
@@ -193,7 +204,7 @@ export class HtmlTemplates {
 </head>
 <body>
     ${content}
-    <script>
+    <script nonce="${nonce}">
         const vscode = acquireVsCodeApi();
         ${HtmlTemplates.getCopyButtonScript()}
         ${extraScripts}

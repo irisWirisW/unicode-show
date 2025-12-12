@@ -3,23 +3,6 @@
  * 负责获取和处理 Unicode 字符的详细信息
  */
 
-/**
- * unicode-properties 库的类型定义
- */
-interface UnicodeProperties {
-	getName(codePoint: number): string | null;
-	getCategory(codePoint: number): string | null;
-	getScript(codePoint: number): string | null;
-}
-
-// 尝试导入 unicode-properties，如果失败则使用备用方案
-let unicode: UnicodeProperties | null;
-try {
-	unicode = require("unicode-properties") as UnicodeProperties;
-} catch (_error) {
-	unicode = null;
-}
-
 export interface UnicodeCharacterInfo {
 	char: string;
 	codePoint: number;
@@ -207,44 +190,23 @@ export class UnicodeInfoService {
 	}
 
 	/**
-	 * 安全地获取Unicode名称
+	 * 获取Unicode名称
 	 */
 	private static getUnicodeName(codePoint: number): string {
-		try {
-			if (unicode?.getName) {
-				return unicode.getName(codePoint) || UnicodeInfoService.getUnicodeInfoFallback(codePoint).name;
-			}
-		} catch (e) {
-			console.warn("Error getting Unicode name:", e);
-		}
 		return UnicodeInfoService.getUnicodeInfoFallback(codePoint).name;
 	}
 
 	/**
-	 * 安全地获取Unicode分类
+	 * 获取Unicode分类
 	 */
 	private static getUnicodeCategory(codePoint: number): string {
-		try {
-			if (unicode?.getCategory) {
-				return unicode.getCategory(codePoint) || UnicodeInfoService.getUnicodeInfoFallback(codePoint).category;
-			}
-		} catch (e) {
-			console.warn("Error getting Unicode category:", e);
-		}
 		return UnicodeInfoService.getUnicodeInfoFallback(codePoint).category;
 	}
 
 	/**
-	 * 安全地获取Unicode脚本
+	 * 获取Unicode脚本
 	 */
 	private static getUnicodeScript(codePoint: number): string {
-		try {
-			if (unicode?.getScript) {
-				return unicode.getScript(codePoint) || UnicodeInfoService.getUnicodeInfoFallback(codePoint).script;
-			}
-		} catch (e) {
-			console.warn("Error getting Unicode script:", e);
-		}
 		return UnicodeInfoService.getUnicodeInfoFallback(codePoint).script;
 	}
 }

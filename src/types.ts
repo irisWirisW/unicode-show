@@ -69,6 +69,27 @@ export interface ShowErrorMessage extends WebviewMessage {
 export type AnyWebviewMessage = GenerateRandomMessage | ConvertUnicodeMessage | ShowUnicodeMessage | ShowErrorMessage;
 
 /**
+ * 类型守卫：检查是否为有效的 WebviewMessage
+ */
+export function isWebviewMessage(value: unknown): value is WebviewMessage {
+	return typeof value === "object" && value !== null && "command" in value && typeof (value as WebviewMessage).command === "string";
+}
+
+/**
+ * 类型守卫：检查是否为 GenerateRandomMessage
+ */
+export function isGenerateRandomMessage(value: unknown): value is GenerateRandomMessage {
+	return isWebviewMessage(value) && value.command === "generateRandom";
+}
+
+/**
+ * 类型守卫：检查是否为 ConvertUnicodeMessage
+ */
+export function isConvertUnicodeMessage(value: unknown): value is ConvertUnicodeMessage {
+	return isWebviewMessage(value) && value.command === "convertUnicode" && "text" in value && typeof (value as ConvertUnicodeMessage).text === "string";
+}
+
+/**
  * Unicode 显示信息
  */
 export interface UnicodeDisplayInfo {
