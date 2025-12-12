@@ -11,127 +11,127 @@ import { HtmlTemplates } from "./utils/htmlTemplates";
  * 反向转换消息类型
  */
 interface ConvertCharMessage {
-	command: "convertChar";
-	char: string;
+  command: "convertChar";
+  char: string;
 }
 
 interface CopyTextMessage {
-	command: "copyText";
-	text: string;
+  command: "copyText";
+  text: string;
 }
 
 type ReverseConverterMessage = AnyWebviewMessage | ConvertCharMessage | CopyTextMessage;
 
 function isConvertCharMessage(value: unknown): value is ConvertCharMessage {
-	return isWebviewMessage(value) && value.command === "convertChar" && "char" in value;
+  return isWebviewMessage(value) && value.command === "convertChar" && "char" in value;
 }
 
 function isCopyTextMessage(value: unknown): value is CopyTextMessage {
-	return isWebviewMessage(value) && value.command === "copyText" && "text" in value;
+  return isWebviewMessage(value) && value.command === "copyText" && "text" in value;
 }
 
 /**
  * 反向转换结果
  */
 interface CharacterConversionResult {
-	char: string;
-	codePoint: number;
-	unicodeHex: string;
-	utf8Bytes: string;
-	utf16Bytes: string;
-	htmlEntity: string;
-	htmlHexEntity: string;
-	jsEscape: string;
-	jsEscapeExtended?: string;
-	pythonEscape: string;
-	cssEscape: string;
-	block?: string;
+  char: string;
+  codePoint: number;
+  unicodeHex: string;
+  utf8Bytes: string;
+  utf16Bytes: string;
+  htmlEntity: string;
+  htmlHexEntity: string;
+  jsEscape: string;
+  jsEscapeExtended?: string;
+  pythonEscape: string;
+  cssEscape: string;
+  block?: string;
 }
 
 export class CharToUnicodePanel extends BaseWebviewPanel {
-	public static currentPanel: CharToUnicodePanel | undefined;
+  public static currentPanel: CharToUnicodePanel | undefined;
 
-	private constructor(panel: vscode.WebviewPanel) {
-		super(panel);
-	}
+  private constructor(panel: vscode.WebviewPanel) {
+    super(panel);
+  }
 
-	public static createOrShow(_extensionUri: vscode.Uri): void {
-		if (CharToUnicodePanel.currentPanel) {
-			CharToUnicodePanel.currentPanel._panel.reveal(vscode.ViewColumn.One);
-			return;
-		}
+  public static createOrShow(_extensionUri: vscode.Uri): void {
+    if (CharToUnicodePanel.currentPanel) {
+      CharToUnicodePanel.currentPanel._panel.reveal(vscode.ViewColumn.One);
+      return;
+    }
 
-		const panel = vscode.window.createWebviewPanel(WEBVIEW_PANELS.UNICODE_VIEWER, "字符转 Unicode", vscode.ViewColumn.One, {
-			enableScripts: true,
-			retainContextWhenHidden: true,
-		});
+    const panel = vscode.window.createWebviewPanel(WEBVIEW_PANELS.UNICODE_VIEWER, "字符转 Unicode", vscode.ViewColumn.One, {
+      enableScripts: true,
+      retainContextWhenHidden: true,
+    });
 
-		CharToUnicodePanel.currentPanel = new CharToUnicodePanel(panel);
-	}
+    CharToUnicodePanel.currentPanel = new CharToUnicodePanel(panel);
+  }
 
-	protected handleMessage(message: ReverseConverterMessage): void {
-		if (isConvertCharMessage(message)) {
-			this.convertCharacter(message.char);
-		} else if (isCopyTextMessage(message)) {
-			vscode.env.clipboard.writeText(message.text);
-			vscode.window.showInformationMessage(`已复制: ${message.text}`);
-		}
-	}
+  protected handleMessage(message: ReverseConverterMessage): void {
+    if (isConvertCharMessage(message)) {
+      this.convertCharacter(message.char);
+    } else if (isCopyTextMessage(message)) {
+      vscode.env.clipboard.writeText(message.text);
+      vscode.window.showInformationMessage(`已复制: ${message.text}`);
+    }
+  }
 
-	private convertCharacter(input: string): void {
-		if (!input || input.length === 0) {
-			this.postMessage({
-				command: MESSAGE_COMMANDS.SHOW_ERROR,
-				message: "请输入字符",
-			} as AnyWebviewMessage);
-			return;
-		}
+  private convertCharacter(input: string): void {
+    if (!input || input.length === 0) {
+      this.postMessage({
+        command: MESSAGE_COMMANDS.SHOW_ERROR,
+        message: "请输入字符",
+      } as AnyWebviewMessage);
+      return;
+    }
 
-		// 获取所有字符的信息
-		const results: CharacterConversionResult[] = [];
-		const chars = [...input]; // 使用扩展运算符正确处理代理对
+    // 获取所有字符的信息
+    const results: CharacterConversionResult[] = [];
+    const chars = [...input]; // 使用扩展运算符正确处理代理对
 
-		for (const char of chars) {
-			const codePoint = char.codePointAt(0);
-			if (codePoint === undefined) continue;
+    for (const char of chars) {
+      const codePoint = char.codePointAt(0);
+      if (codePoint === undefined) continue;
 
-			const unicodeHex = codePoint.toString(16).toUpperCase().padStart(4, "0");
-			const info = UnicodeInfoService.getCharacterInfo(char, codePoint, unicodeHex);
-			const block = findBlockByCodePoint(codePoint);
+      const unicodeHex = codePoint.toString(16).toUpperCase().padStart(4, "0");
+      const info = UnicodeInfoService.getCharacterInfo(char, codePoint, unicodeHex);
+      const block = findBlockByCodePoint(codePoint);
 
-			const result: CharacterConversionResult = {
-				char,
-				codePoint,
-				unicodeHex,
-				utf8Bytes: info.utf8Bytes,
-				utf16Bytes: info.utf16Bytes,
-				htmlEntity: info.htmlEntity,
-				htmlHexEntity: info.htmlHexEntity,
-				jsEscape: codePoint > 0xffff ? `\\u{${unicodeHex}}` : `\\u${unicodeHex.padStart(4, "0")}`,
-				pythonEscape: codePoint > 0xffff ? `\\U${unicodeHex.padStart(8, "0")}` : `\\u${unicodeHex.padStart(4, "0")}`,
-				cssEscape: `\\${unicodeHex}`,
-				block: block?.name,
-			};
+      const result: CharacterConversionResult = {
+        char,
+        codePoint,
+        unicodeHex,
+        utf8Bytes: info.utf8Bytes,
+        utf16Bytes: info.utf16Bytes,
+        htmlEntity: info.htmlEntity,
+        htmlHexEntity: info.htmlHexEntity,
+        jsEscape: codePoint > 0xffff ? `\\u{${unicodeHex}}` : `\\u${unicodeHex.padStart(4, "0")}`,
+        pythonEscape: codePoint > 0xffff ? `\\U${unicodeHex.padStart(8, "0")}` : `\\u${unicodeHex.padStart(4, "0")}`,
+        cssEscape: `\\${unicodeHex}`,
+        block: block?.name,
+      };
 
-			if (codePoint > 0xffff) {
-				result.jsEscapeExtended = `\\u{${unicodeHex}}`;
-			}
+      if (codePoint > 0xffff) {
+        result.jsEscapeExtended = `\\u{${unicodeHex}}`;
+      }
 
-			results.push(result);
-		}
+      results.push(result);
+    }
 
-		this.postMessage({
-			command: MESSAGE_COMMANDS.SHOW_RESULT,
-			char: "",
-			codePoint: 0,
-			unicodeHex: "",
-			format: "charResults",
-			input: JSON.stringify(results),
-		} as AnyWebviewMessage);
-	}
+    this.postMessage({
+      command: MESSAGE_COMMANDS.SHOW_RESULT,
+      char: "",
+      codePoint: 0,
+      unicodeHex: "",
+      format: "charResults",
+      input: JSON.stringify(results),
+    } as AnyWebviewMessage);
+  }
 
-	protected getWebviewContent(): string {
-		const content = `
+  protected getWebviewContent(): string {
+    const content = `
             <div class="container">
                 <h1>字符转 Unicode</h1>
                 <p class="subtitle">输入任意字符，获取其 Unicode 码点和各种编码格式</p>
@@ -170,7 +170,7 @@ export class CharToUnicodePanel extends BaseWebviewPanel {
             </div>
         `;
 
-		const extraStyles = `
+    const extraStyles = `
             .subtitle {
                 color: var(--vscode-descriptionForeground);
                 margin-bottom: 20px;
@@ -307,7 +307,7 @@ export class CharToUnicodePanel extends BaseWebviewPanel {
             }
         `;
 
-		const extraScripts = `
+    const extraScripts = `
             const input = document.getElementById('charInput');
             const convertBtn = document.getElementById('convertBtn');
             const errorMessage = document.getElementById('errorMessage');
@@ -427,11 +427,11 @@ export class CharToUnicodePanel extends BaseWebviewPanel {
             }
         `;
 
-		return HtmlTemplates.createBaseHtml("字符转 Unicode", content, extraStyles, extraScripts);
-	}
+    return HtmlTemplates.createBaseHtml("字符转 Unicode", content, extraStyles, extraScripts);
+  }
 
-	public dispose(): void {
-		CharToUnicodePanel.currentPanel = undefined;
-		super.dispose();
-	}
+  public dispose(): void {
+    CharToUnicodePanel.currentPanel = undefined;
+    super.dispose();
+  }
 }

@@ -8,54 +8,54 @@ import { HtmlTemplates } from "./utils/htmlTemplates";
 import { logger } from "./utils/logger";
 
 export class RandomUnicodePanel extends BaseWebviewPanel {
-	public static currentPanel: RandomUnicodePanel | undefined;
+  public static currentPanel: RandomUnicodePanel | undefined;
 
-	private constructor(panel: vscode.WebviewPanel) {
-		super(panel);
-	}
+  private constructor(panel: vscode.WebviewPanel) {
+    super(panel);
+  }
 
-	public static createOrShow(_extensionUri: vscode.Uri): void {
-		// 如果已经存在面板，则显示它
-		if (RandomUnicodePanel.currentPanel) {
-			RandomUnicodePanel.currentPanel._panel.reveal(vscode.ViewColumn.One);
-			return;
-		}
+  public static createOrShow(_extensionUri: vscode.Uri): void {
+    // 如果已经存在面板，则显示它
+    if (RandomUnicodePanel.currentPanel) {
+      RandomUnicodePanel.currentPanel._panel.reveal(vscode.ViewColumn.One);
+      return;
+    }
 
-		// 创建新的面板
-		const panel = vscode.window.createWebviewPanel(WEBVIEW_PANELS.RANDOM_UNICODE, "🎲 随机 Unicode", vscode.ViewColumn.One, {
-			enableScripts: true,
-			retainContextWhenHidden: true,
-		});
+    // 创建新的面板
+    const panel = vscode.window.createWebviewPanel(WEBVIEW_PANELS.RANDOM_UNICODE, "🎲 随机 Unicode", vscode.ViewColumn.One, {
+      enableScripts: true,
+      retainContextWhenHidden: true,
+    });
 
-		RandomUnicodePanel.currentPanel = new RandomUnicodePanel(panel);
-	}
+    RandomUnicodePanel.currentPanel = new RandomUnicodePanel(panel);
+  }
 
-	protected handleMessage(message: AnyWebviewMessage): void {
-		if (isGenerateRandomMessage(message)) {
-			this.generateRandomUnicode();
-		}
-	}
+  protected handleMessage(message: AnyWebviewMessage): void {
+    if (isGenerateRandomMessage(message)) {
+      this.generateRandomUnicode();
+    }
+  }
 
-	private generateRandomUnicode(): void {
-		const result = UnicodeConverter.generateRandom();
+  private generateRandomUnicode(): void {
+    const result = UnicodeConverter.generateRandom();
 
-		if (result.success && result.char && result.codePoint !== undefined && result.unicodeHex && result.format) {
-			const message: ShowUnicodeMessage = {
-				command: MESSAGE_COMMANDS.SHOW_UNICODE,
-				char: result.char,
-				codePoint: result.codePoint,
-				unicodeHex: result.unicodeHex,
-				format: result.format,
-			};
-			this.postMessage(message);
-		} else {
-			vscode.window.showErrorMessage(result.error || "生成 Unicode 失败");
-			logger.error("Failed to generate random unicode:", result.error);
-		}
-	}
+    if (result.success && result.char && result.codePoint !== undefined && result.unicodeHex && result.format) {
+      const message: ShowUnicodeMessage = {
+        command: MESSAGE_COMMANDS.SHOW_UNICODE,
+        char: result.char,
+        codePoint: result.codePoint,
+        unicodeHex: result.unicodeHex,
+        format: result.format,
+      };
+      this.postMessage(message);
+    } else {
+      vscode.window.showErrorMessage(result.error || "生成 Unicode 失败");
+      logger.error("Failed to generate random unicode:", result.error);
+    }
+  }
 
-	protected getWebviewContent(): string {
-		const content = `
+  protected getWebviewContent(): string {
+    const content = `
             <div class="container">
                 <h1>🎲 随机 Unicode 字符生成器</h1>
 
@@ -69,7 +69,7 @@ export class RandomUnicodePanel extends BaseWebviewPanel {
             </div>
         `;
 
-		const extraStyles = `
+    const extraStyles = `
             .tips {
                 margin-top: 30px;
                 padding: 15px;
@@ -86,7 +86,7 @@ export class RandomUnicodePanel extends BaseWebviewPanel {
             }
         `;
 
-		const extraScripts = `
+    const extraScripts = `
             document.getElementById('generateBtn').addEventListener('click', () => {
                 vscode.postMessage({ command: '${MESSAGE_COMMANDS.GENERATE_RANDOM}' });
             });
@@ -103,11 +103,11 @@ export class RandomUnicodePanel extends BaseWebviewPanel {
             });
         `;
 
-		return HtmlTemplates.createBaseHtml("随机 Unicode 生成器", content, extraStyles, extraScripts);
-	}
+    return HtmlTemplates.createBaseHtml("随机 Unicode 生成器", content, extraStyles, extraScripts);
+  }
 
-	public dispose(): void {
-		RandomUnicodePanel.currentPanel = undefined;
-		super.dispose();
-	}
+  public dispose(): void {
+    RandomUnicodePanel.currentPanel = undefined;
+    super.dispose();
+  }
 }

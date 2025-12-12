@@ -8,68 +8,68 @@ import { HtmlTemplates } from "./utils/htmlTemplates";
 import { logger } from "./utils/logger";
 
 export class UnicodeViewerPanel extends BaseWebviewPanel {
-	public static currentPanel: UnicodeViewerPanel | undefined;
+  public static currentPanel: UnicodeViewerPanel | undefined;
 
-	private constructor(panel: vscode.WebviewPanel) {
-		super(panel);
-	}
+  private constructor(panel: vscode.WebviewPanel) {
+    super(panel);
+  }
 
-	public static createOrShow(_extensionUri: vscode.Uri): void {
-		// 如果已经存在面板，则显示它
-		if (UnicodeViewerPanel.currentPanel) {
-			UnicodeViewerPanel.currentPanel._panel.reveal(vscode.ViewColumn.One);
-			return;
-		}
+  public static createOrShow(_extensionUri: vscode.Uri): void {
+    // 如果已经存在面板，则显示它
+    if (UnicodeViewerPanel.currentPanel) {
+      UnicodeViewerPanel.currentPanel._panel.reveal(vscode.ViewColumn.One);
+      return;
+    }
 
-		// 创建新的面板
-		const panel = vscode.window.createWebviewPanel(WEBVIEW_PANELS.UNICODE_VIEWER, "📖 Unicode 查看器", vscode.ViewColumn.One, {
-			enableScripts: true,
-			retainContextWhenHidden: true,
-		});
+    // 创建新的面板
+    const panel = vscode.window.createWebviewPanel(WEBVIEW_PANELS.UNICODE_VIEWER, "📖 Unicode 查看器", vscode.ViewColumn.One, {
+      enableScripts: true,
+      retainContextWhenHidden: true,
+    });
 
-		UnicodeViewerPanel.currentPanel = new UnicodeViewerPanel(panel);
-	}
+    UnicodeViewerPanel.currentPanel = new UnicodeViewerPanel(panel);
+  }
 
-	protected handleMessage(message: AnyWebviewMessage): void {
-		if (isConvertUnicodeMessage(message)) {
-			this.convertUnicode(message.text);
-		}
-	}
+  protected handleMessage(message: AnyWebviewMessage): void {
+    if (isConvertUnicodeMessage(message)) {
+      this.convertUnicode(message.text);
+    }
+  }
 
-	private convertUnicode(text: string): void {
-		if (!text || text.trim() === "") {
-			const errorMessage: ShowErrorMessage = {
-				command: MESSAGE_COMMANDS.SHOW_ERROR,
-				message: "请输入 Unicode 码点",
-			};
-			this.postMessage(errorMessage);
-			return;
-		}
+  private convertUnicode(text: string): void {
+    if (!text || text.trim() === "") {
+      const errorMessage: ShowErrorMessage = {
+        command: MESSAGE_COMMANDS.SHOW_ERROR,
+        message: "请输入 Unicode 码点",
+      };
+      this.postMessage(errorMessage);
+      return;
+    }
 
-		const result = UnicodeConverter.convert(text.trim());
+    const result = UnicodeConverter.convert(text.trim());
 
-		if (result.success && result.char && result.codePoint !== undefined && result.unicodeHex && result.format) {
-			const message: ShowUnicodeMessage = {
-				command: MESSAGE_COMMANDS.SHOW_RESULT,
-				char: result.char,
-				codePoint: result.codePoint,
-				unicodeHex: result.unicodeHex,
-				format: result.format,
-				input: text.trim(),
-			};
-			this.postMessage(message);
-		} else {
-			const errorMessage: ShowErrorMessage = {
-				command: MESSAGE_COMMANDS.SHOW_ERROR,
-				message: result.error || "转换失败",
-			};
-			this.postMessage(errorMessage);
-			logger.warn("Unicode conversion failed:", result.error);
-		}
-	}
+    if (result.success && result.char && result.codePoint !== undefined && result.unicodeHex && result.format) {
+      const message: ShowUnicodeMessage = {
+        command: MESSAGE_COMMANDS.SHOW_RESULT,
+        char: result.char,
+        codePoint: result.codePoint,
+        unicodeHex: result.unicodeHex,
+        format: result.format,
+        input: text.trim(),
+      };
+      this.postMessage(message);
+    } else {
+      const errorMessage: ShowErrorMessage = {
+        command: MESSAGE_COMMANDS.SHOW_ERROR,
+        message: result.error || "转换失败",
+      };
+      this.postMessage(errorMessage);
+      logger.warn("Unicode conversion failed:", result.error);
+    }
+  }
 
-	protected getWebviewContent(): string {
-		const content = `
+  protected getWebviewContent(): string {
+    const content = `
             <div class="container">
                 <h1>📖 Unicode 查看器</h1>
 
@@ -105,7 +105,7 @@ export class UnicodeViewerPanel extends BaseWebviewPanel {
             </div>
         `;
 
-		const extraStyles = `
+    const extraStyles = `
             .input-section {
                 margin: 30px 0;
             }
@@ -155,7 +155,7 @@ export class UnicodeViewerPanel extends BaseWebviewPanel {
             }
         `;
 
-		const extraScripts = `
+    const extraScripts = `
             const input = document.getElementById('unicodeInput');
             const convertBtn = document.getElementById('convertBtn');
             const errorMessage = document.getElementById('errorMessage');
@@ -211,11 +211,11 @@ export class UnicodeViewerPanel extends BaseWebviewPanel {
             }
         `;
 
-		return HtmlTemplates.createBaseHtml("Unicode 查看器", content, extraStyles, extraScripts);
-	}
+    return HtmlTemplates.createBaseHtml("Unicode 查看器", content, extraStyles, extraScripts);
+  }
 
-	public dispose(): void {
-		UnicodeViewerPanel.currentPanel = undefined;
-		super.dispose();
-	}
+  public dispose(): void {
+    UnicodeViewerPanel.currentPanel = undefined;
+    super.dispose();
+  }
 }

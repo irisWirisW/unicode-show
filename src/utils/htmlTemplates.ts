@@ -164,13 +164,13 @@ export class HtmlTemplates {
                 text-align: center;
             }
         `;
-	}
+  }
 
-	/**
-	 * 获取公共脚本（复制按钮功能）
-	 */
-	static getCopyButtonScript(): string {
-		return `
+  /**
+   * 获取公共脚本（复制按钮功能）
+   */
+  static getCopyButtonScript(): string {
+    return `
       document.getElementById('copyBtn')?.addEventListener('click', () => {
         const char = document.getElementById('unicodeChar').textContent;
           navigator.clipboard.writeText(char).then(() => {
@@ -183,7 +183,7 @@ export class HtmlTemplates {
           });
       });
     `;
-	}
+  }
 
   /**
    * 生成基础的HTML文档框架
@@ -224,9 +224,10 @@ export class HtmlTemplates {
             <span class="info-label">输入格式:</span>
             <span class="info-value" id="inputFormat"></span>
           </div>
-        ` : "";
+        `
+      : "";
 
-      return `
+    return `
             <div id="resultContainer" class="result-container">
                 <div class="unicode-display" id="unicodeChar"></div>
                 <div class="unicode-info">
@@ -249,7 +250,7 @@ export class HtmlTemplates {
                 </div>
             </div>
         `;
-}
+  }
 
   /**
    * 创建提示框HTML
@@ -262,5 +263,5 @@ export class HtmlTemplates {
                 ${tipsHtml}
             </div>
         `;
-	}
+  }
 }

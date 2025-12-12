@@ -5,143 +5,143 @@ import type { UnicodeConversionResult, UnicodeRange } from "./types";
  * 负责处理各种 Unicode 格式的转换
  */
 export class UnicodeConverter {
-	/**
-	 * 常用的 Unicode 范围
-	 */
-	private static readonly COMMON_RANGES: UnicodeRange[] = [
-		{ name: "基本拉丁字母", start: 0x0020, end: 0x007e },
-		{ name: "拉丁补充-1", start: 0x00a0, end: 0x00ff },
-		{ name: "希腊字母", start: 0x0370, end: 0x03ff },
-		{ name: "西里尔字母", start: 0x0400, end: 0x04ff },
-		{ name: "中日韩统一表意文字", start: 0x4e00, end: 0x9fff },
-		{ name: "表情符号和图形符号", start: 0x1f300, end: 0x1f9ff },
-		{ name: "杂项符号", start: 0x2600, end: 0x26ff },
-		{ name: "装饰符号", start: 0x2700, end: 0x27bf },
-		{ name: "表情符号", start: 0x1f600, end: 0x1f64f },
-	];
+  /**
+   * 常用的 Unicode 范围
+   */
+  private static readonly COMMON_RANGES: UnicodeRange[] = [
+    { name: "基本拉丁字母", start: 0x0020, end: 0x007e },
+    { name: "拉丁补充-1", start: 0x00a0, end: 0x00ff },
+    { name: "希腊字母", start: 0x0370, end: 0x03ff },
+    { name: "西里尔字母", start: 0x0400, end: 0x04ff },
+    { name: "中日韩统一表意文字", start: 0x4e00, end: 0x9fff },
+    { name: "表情符号和图形符号", start: 0x1f300, end: 0x1f9ff },
+    { name: "杂项符号", start: 0x2600, end: 0x26ff },
+    { name: "装饰符号", start: 0x2700, end: 0x27bf },
+    { name: "表情符号", start: 0x1f600, end: 0x1f64f },
+  ];
 
-	/**
-	 * 将 Unicode 码点文本转换为字符
-	 * @param text - 输入的 Unicode 码点文本
-	 * @returns 转换结果
-	 */
-	static convert(text: string): UnicodeConversionResult {
-		// 验证输入
-		if (!text || !text.trim()) {
-			return {
-				success: false,
-				error: "没有输入",
-			};
-		}
+  /**
+   * 将 Unicode 码点文本转换为字符
+   * @param text - 输入的 Unicode 码点文本
+   * @returns 转换结果
+   */
+  static convert(text: string): UnicodeConversionResult {
+    // 验证输入
+    if (!text || !text.trim()) {
+      return {
+        success: false,
+        error: "没有输入",
+      };
+    }
 
-		// 清理输入
-		text = text.replace(/['"]/g, "").trim();
+    // 清理输入
+    text = text.replace(/['"]/g, "").trim();
 
-		// 尝试解析码点
-		const codePoint = UnicodeConverter.parseCodePoint(text);
-		if (codePoint === null) {
-			return {
-				success: false,
-				error: "不是标准的 Unicode 码点",
-			};
-		}
+    // 尝试解析码点
+    const codePoint = UnicodeConverter.parseCodePoint(text);
+    if (codePoint === null) {
+      return {
+        success: false,
+        error: "不是标准的 Unicode 码点",
+      };
+    }
 
-		// 验证码点范围
-		if (!UnicodeConverter.isValidCodePoint(codePoint)) {
-			return {
-				success: false,
-				error: `无效的 Unicode 码点: ${codePoint}`,
-			};
-		}
+    // 验证码点范围
+    if (!UnicodeConverter.isValidCodePoint(codePoint)) {
+      return {
+        success: false,
+        error: `无效的 Unicode 码点: ${codePoint}`,
+      };
+    }
 
-		// 转换为字符
-		try {
-			const char = String.fromCodePoint(codePoint);
-			const unicodeHex = codePoint.toString(16).toUpperCase().padStart(4, "0");
+    // 转换为字符
+    try {
+      const char = String.fromCodePoint(codePoint);
+      const unicodeHex = codePoint.toString(16).toUpperCase().padStart(4, "0");
 
-			return {
-				success: true,
-				char,
-				codePoint,
-				unicodeHex,
-				format: `U+${unicodeHex}`,
-			};
-		} catch (_error) {
-			return {
-				success: false,
-				error: `无法转换码点: ${codePoint}`,
-			};
-		}
-	}
+      return {
+        success: true,
+        char,
+        codePoint,
+        unicodeHex,
+        format: `U+${unicodeHex}`,
+      };
+    } catch (_error) {
+      return {
+        success: false,
+        error: `无法转换码点: ${codePoint}`,
+      };
+    }
+  }
 
-	/**
-	 * 生成随机 Unicode 字符
-	 * @returns 随机字符的转换结果
-	 */
-	static generateRandom(): UnicodeConversionResult {
-		const range = UnicodeConverter.COMMON_RANGES[Math.floor(Math.random() * UnicodeConverter.COMMON_RANGES.length)];
+  /**
+   * 生成随机 Unicode 字符
+   * @returns 随机字符的转换结果
+   */
+  static generateRandom(): UnicodeConversionResult {
+    const range = UnicodeConverter.COMMON_RANGES[Math.floor(Math.random() * UnicodeConverter.COMMON_RANGES.length)];
 
-		const codePoint = Math.floor(Math.random() * (range.end - range.start + 1)) + range.start;
+    const codePoint = Math.floor(Math.random() * (range.end - range.start + 1)) + range.start;
 
-		try {
-			const char = String.fromCodePoint(codePoint);
-			const unicodeHex = codePoint.toString(16).toUpperCase().padStart(4, "0");
+    try {
+      const char = String.fromCodePoint(codePoint);
+      const unicodeHex = codePoint.toString(16).toUpperCase().padStart(4, "0");
 
-			return {
-				success: true,
-				char,
-				codePoint,
-				unicodeHex,
-				format: `U+${unicodeHex}`,
-			};
-		} catch (error) {
-			return {
-				success: false,
-				error: `生成 Unicode 失败: ${error}`,
-			};
-		}
-	}
+      return {
+        success: true,
+        char,
+        codePoint,
+        unicodeHex,
+        format: `U+${unicodeHex}`,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: `生成 Unicode 失败: ${error}`,
+      };
+    }
+  }
 
-	/**
-	 * 获取所有常用的 Unicode 范围
-	 */
-	static getCommonRanges(): UnicodeRange[] {
-		return [...UnicodeConverter.COMMON_RANGES];
-	}
+  /**
+   * 获取所有常用的 Unicode 范围
+   */
+  static getCommonRanges(): UnicodeRange[] {
+    return [...UnicodeConverter.COMMON_RANGES];
+  }
 
-	/**
-	 * 解析 Unicode 码点
-	 * 支持多种格式：U+XXXX, \uXXXX, \UXXXXXXXX, \xXX, &#XXX;, &#xXXXX;, 纯十六进制
-	 * @param text - 输入文本
-	 * @returns 码点值或 null
-	 */
-	private static parseCodePoint(text: string): number | null {
-		const patterns: { regex: RegExp; radix: number }[] = [
-			{ regex: /^U\+([0-9A-F]+)$/i, radix: 16 }, // U+XXXX 格式
-			{ regex: /^\\u([0-9A-F]{4})$/i, radix: 16 }, // \uXXXX 格式
-			{ regex: /^\\U([0-9A-F]{8})$/i, radix: 16 }, // \UXXXXXXXX 格式
-			{ regex: /^\\x([0-9A-F]{2})$/i, radix: 16 }, // \xXX 格式
-			{ regex: /^&#([0-9]+);?$/, radix: 10 }, // &#XXX; 格式 (十进制)
-			{ regex: /^&#x([0-9A-F]+);?$/i, radix: 16 }, // &#xXXXX; 格式
-			{ regex: /^([0-9A-F]{4,})$/i, radix: 16 }, // 纯十六进制数字
-		];
+  /**
+   * 解析 Unicode 码点
+   * 支持多种格式：U+XXXX, \uXXXX, \UXXXXXXXX, \xXX, &#XXX;, &#xXXXX;, 纯十六进制
+   * @param text - 输入文本
+   * @returns 码点值或 null
+   */
+  private static parseCodePoint(text: string): number | null {
+    const patterns: { regex: RegExp; radix: number }[] = [
+      { regex: /^U\+([0-9A-F]+)$/i, radix: 16 }, // U+XXXX 格式
+      { regex: /^\\u([0-9A-F]{4})$/i, radix: 16 }, // \uXXXX 格式
+      { regex: /^\\U([0-9A-F]{8})$/i, radix: 16 }, // \UXXXXXXXX 格式
+      { regex: /^\\x([0-9A-F]{2})$/i, radix: 16 }, // \xXX 格式
+      { regex: /^&#([0-9]+);?$/, radix: 10 }, // &#XXX; 格式 (十进制)
+      { regex: /^&#x([0-9A-F]+);?$/i, radix: 16 }, // &#xXXXX; 格式
+      { regex: /^([0-9A-F]{4,})$/i, radix: 16 }, // 纯十六进制数字
+    ];
 
-		for (const { regex, radix } of patterns) {
-			const match = text.match(regex);
-			if (match) {
-				return Number.parseInt(match[1], radix);
-			}
-		}
+    for (const { regex, radix } of patterns) {
+      const match = text.match(regex);
+      if (match) {
+        return Number.parseInt(match[1], radix);
+      }
+    }
 
-		return null;
-	}
+    return null;
+  }
 
-	/**
-	 * 验证码点是否在有效范围内
-	 * @param codePoint - 码点值
-	 * @returns 是否有效
-	 */
-	private static isValidCodePoint(codePoint: number): boolean {
-		return codePoint >= 0 && codePoint <= 0x10ffff;
-	}
+  /**
+   * 验证码点是否在有效范围内
+   * @param codePoint - 码点值
+   * @returns 是否有效
+   */
+  private static isValidCodePoint(codePoint: number): boolean {
+    return codePoint >= 0 && codePoint <= 0x10ffff;
+  }
 }

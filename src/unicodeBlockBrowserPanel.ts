@@ -10,134 +10,134 @@ import { HtmlTemplates } from "./utils/htmlTemplates";
  * 区块浏览器特有的消息类型
  */
 interface LoadBlockMessage {
-	command: "loadBlock";
-	blockIndex: number;
+  command: "loadBlock";
+  blockIndex: number;
 }
 
 interface LoadCategoryMessage {
-	command: "loadCategory";
-	category: string;
+  command: "loadCategory";
+  category: string;
 }
 
 interface CopyCharMessage {
-	command: "copyChar";
-	char: string;
+  command: "copyChar";
+  char: string;
 }
 
 type BlockBrowserMessage = AnyWebviewMessage | LoadBlockMessage | LoadCategoryMessage | CopyCharMessage;
 
 function isLoadBlockMessage(value: unknown): value is LoadBlockMessage {
-	return isWebviewMessage(value) && value.command === "loadBlock" && "blockIndex" in value;
+  return isWebviewMessage(value) && value.command === "loadBlock" && "blockIndex" in value;
 }
 
 function isLoadCategoryMessage(value: unknown): value is LoadCategoryMessage {
-	return isWebviewMessage(value) && value.command === "loadCategory" && "category" in value;
+  return isWebviewMessage(value) && value.command === "loadCategory" && "category" in value;
 }
 
 function isCopyCharMessage(value: unknown): value is CopyCharMessage {
-	return isWebviewMessage(value) && value.command === "copyChar" && "char" in value;
+  return isWebviewMessage(value) && value.command === "copyChar" && "char" in value;
 }
 
 export class UnicodeBlockBrowserPanel extends BaseWebviewPanel {
-	public static currentPanel: UnicodeBlockBrowserPanel | undefined;
+  public static currentPanel: UnicodeBlockBrowserPanel | undefined;
 
-	private constructor(panel: vscode.WebviewPanel) {
-		super(panel);
-	}
+  private constructor(panel: vscode.WebviewPanel) {
+    super(panel);
+  }
 
-	public static createOrShow(_extensionUri: vscode.Uri): void {
-		if (UnicodeBlockBrowserPanel.currentPanel) {
-			UnicodeBlockBrowserPanel.currentPanel._panel.reveal(vscode.ViewColumn.One);
-			return;
-		}
+  public static createOrShow(_extensionUri: vscode.Uri): void {
+    if (UnicodeBlockBrowserPanel.currentPanel) {
+      UnicodeBlockBrowserPanel.currentPanel._panel.reveal(vscode.ViewColumn.One);
+      return;
+    }
 
-		const panel = vscode.window.createWebviewPanel(WEBVIEW_PANELS.UNICODE_VIEWER, "Unicode 区块浏览器", vscode.ViewColumn.One, {
-			enableScripts: true,
-			retainContextWhenHidden: true,
-		});
+    const panel = vscode.window.createWebviewPanel(WEBVIEW_PANELS.UNICODE_VIEWER, "Unicode 区块浏览器", vscode.ViewColumn.One, {
+      enableScripts: true,
+      retainContextWhenHidden: true,
+    });
 
-		UnicodeBlockBrowserPanel.currentPanel = new UnicodeBlockBrowserPanel(panel);
-	}
+    UnicodeBlockBrowserPanel.currentPanel = new UnicodeBlockBrowserPanel(panel);
+  }
 
-	protected handleMessage(message: BlockBrowserMessage): void {
-		if (isLoadBlockMessage(message)) {
-			this.loadBlock(message.blockIndex);
-		} else if (isLoadCategoryMessage(message)) {
-			this.loadCategory(message.category);
-		} else if (isCopyCharMessage(message)) {
-			vscode.env.clipboard.writeText(message.char);
-			vscode.window.showInformationMessage(`已复制: ${message.char}`);
-		}
-	}
+  protected handleMessage(message: BlockBrowserMessage): void {
+    if (isLoadBlockMessage(message)) {
+      this.loadBlock(message.blockIndex);
+    } else if (isLoadCategoryMessage(message)) {
+      this.loadCategory(message.category);
+    } else if (isCopyCharMessage(message)) {
+      vscode.env.clipboard.writeText(message.char);
+      vscode.window.showInformationMessage(`已复制: ${message.char}`);
+    }
+  }
 
-	private loadBlock(blockIndex: number): void {
-		const block = UNICODE_BLOCKS[blockIndex];
-		if (!block) return;
+  private loadBlock(blockIndex: number): void {
+    const block = UNICODE_BLOCKS[blockIndex];
+    if (!block) return;
 
-		const chars = this.generateBlockChars(block);
-		this.postMessage({
-			command: MESSAGE_COMMANDS.SHOW_RESULT,
-			char: "",
-			codePoint: 0,
-			unicodeHex: "",
-			format: "blockData",
-			input: JSON.stringify({ block, chars }),
-		} as AnyWebviewMessage);
-	}
+    const chars = this.generateBlockChars(block);
+    this.postMessage({
+      command: MESSAGE_COMMANDS.SHOW_RESULT,
+      char: "",
+      codePoint: 0,
+      unicodeHex: "",
+      format: "blockData",
+      input: JSON.stringify({ block, chars }),
+    } as AnyWebviewMessage);
+  }
 
-	private loadCategory(category: string): void {
-		const blocks = getBlocksByCategory(category);
-		this.postMessage({
-			command: MESSAGE_COMMANDS.SHOW_RESULT,
-			char: "",
-			codePoint: 0,
-			unicodeHex: "",
-			format: "categoryData",
-			input: JSON.stringify(blocks),
-		} as AnyWebviewMessage);
-	}
+  private loadCategory(category: string): void {
+    const blocks = getBlocksByCategory(category);
+    this.postMessage({
+      command: MESSAGE_COMMANDS.SHOW_RESULT,
+      char: "",
+      codePoint: 0,
+      unicodeHex: "",
+      format: "categoryData",
+      input: JSON.stringify(blocks),
+    } as AnyWebviewMessage);
+  }
 
-	private generateBlockChars(block: UnicodeBlock): Array<{ char: string; codePoint: number; hex: string }> {
-		const chars: Array<{ char: string; codePoint: number; hex: string }> = [];
-		// 限制最多显示 256 个字符，避免大区块导致性能问题
-		const maxChars = 256;
-		const step = Math.max(1, Math.ceil((block.end - block.start + 1) / maxChars));
+  private generateBlockChars(block: UnicodeBlock): Array<{ char: string; codePoint: number; hex: string }> {
+    const chars: Array<{ char: string; codePoint: number; hex: string }> = [];
+    // 限制最多显示 256 个字符，避免大区块导致性能问题
+    const maxChars = 256;
+    const step = Math.max(1, Math.ceil((block.end - block.start + 1) / maxChars));
 
-		for (let cp = block.start; cp <= block.end && chars.length < maxChars; cp += step) {
-			try {
-				const char = String.fromCodePoint(cp);
-				// 跳过控制字符和未分配字符
-				if (this.isPrintable(cp)) {
-					chars.push({
-						char,
-						codePoint: cp,
-						hex: cp.toString(16).toUpperCase().padStart(4, "0"),
-					});
-				}
-			} catch {
-				// 忽略无效码点
-			}
-		}
-		return chars;
-	}
+    for (let cp = block.start; cp <= block.end && chars.length < maxChars; cp += step) {
+      try {
+        const char = String.fromCodePoint(cp);
+        // 跳过控制字符和未分配字符
+        if (this.isPrintable(cp)) {
+          chars.push({
+            char,
+            codePoint: cp,
+            hex: cp.toString(16).toUpperCase().padStart(4, "0"),
+          });
+        }
+      } catch {
+        // 忽略无效码点
+      }
+    }
+    return chars;
+  }
 
-	private isPrintable(cp: number): boolean {
-		// 跳过控制字符 (0x00-0x1F, 0x7F-0x9F)
-		if (cp <= 0x1f || (cp >= 0x7f && cp <= 0x9f)) return false;
-		// 跳过代理对范围 (0xD800-0xDFFF)
-		if (cp >= 0xd800 && cp <= 0xdfff) return false;
-		// 跳过私用区的大部分（只显示开头部分）
-		if (cp >= 0xe100 && cp <= 0xf8ff) return false;
-		return true;
-	}
+  private isPrintable(cp: number): boolean {
+    // 跳过控制字符 (0x00-0x1F, 0x7F-0x9F)
+    if (cp <= 0x1f || (cp >= 0x7f && cp <= 0x9f)) return false;
+    // 跳过代理对范围 (0xD800-0xDFFF)
+    if (cp >= 0xd800 && cp <= 0xdfff) return false;
+    // 跳过私用区的大部分（只显示开头部分）
+    if (cp >= 0xe100 && cp <= 0xf8ff) return false;
+    return true;
+  }
 
-	protected getWebviewContent(): string {
-		const categories = getCategories();
-		const categoryOptions = categories.map(cat => `<option value="${cat}">${cat}</option>`).join("");
+  protected getWebviewContent(): string {
+    const categories = getCategories();
+    const categoryOptions = categories.map(cat => `<option value="${cat}">${cat}</option>`).join("");
 
-		const blockOptions = UNICODE_BLOCKS.map((block, index) => `<option value="${index}" data-category="${block.category}">${block.name} (${block.nameEn}) [U+${block.start.toString(16).toUpperCase().padStart(4, "0")}]</option>`).join("");
+    const blockOptions = UNICODE_BLOCKS.map((block, index) => `<option value="${index}" data-category="${block.category}">${block.name} (${block.nameEn}) [U+${block.start.toString(16).toUpperCase().padStart(4, "0")}]</option>`).join("");
 
-		const content = `
+    const content = `
             <div class="container">
                 <h1>Unicode 区块浏览器</h1>
 
@@ -173,7 +173,7 @@ export class UnicodeBlockBrowserPanel extends BaseWebviewPanel {
             </div>
         `;
 
-		const extraStyles = `
+    const extraStyles = `
             .selector-section {
                 display: flex;
                 gap: 20px;
@@ -321,7 +321,7 @@ export class UnicodeBlockBrowserPanel extends BaseWebviewPanel {
             }
         `;
 
-		const extraScripts = `
+    const extraScripts = `
             const categorySelect = document.getElementById('categorySelect');
             const blockSelect = document.getElementById('blockSelect');
             const blockInfo = document.getElementById('blockInfo');
@@ -437,11 +437,11 @@ export class UnicodeBlockBrowserPanel extends BaseWebviewPanel {
             }
         `;
 
-		return HtmlTemplates.createBaseHtml("Unicode 区块浏览器", content, extraStyles, extraScripts);
-	}
+    return HtmlTemplates.createBaseHtml("Unicode 区块浏览器", content, extraStyles, extraScripts);
+  }
 
-	public dispose(): void {
-		UnicodeBlockBrowserPanel.currentPanel = undefined;
-		super.dispose();
-	}
+  public dispose(): void {
+    UnicodeBlockBrowserPanel.currentPanel = undefined;
+    super.dispose();
+  }
 }
