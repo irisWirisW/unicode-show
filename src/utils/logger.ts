@@ -29,25 +29,25 @@ export class Logger {
 		this.logLevel = level;
 	}
 
-	debug(message: string, ...args: any[]): void {
+	debug(message: string, ...args: unknown[]): void {
 		if (this.logLevel <= LogLevel.DEBUG) {
 			console.log(`[${this.prefix}][DEBUG]`, message, ...args);
 		}
 	}
 
-	info(message: string, ...args: any[]): void {
+	info(message: string, ...args: unknown[]): void {
 		if (this.logLevel <= LogLevel.INFO) {
 			console.log(`[${this.prefix}][INFO]`, message, ...args);
 		}
 	}
 
-	warn(message: string, ...args: any[]): void {
+	warn(message: string, ...args: unknown[]): void {
 		if (this.logLevel <= LogLevel.WARN) {
 			console.warn(`[${this.prefix}][WARN]`, message, ...args);
 		}
 	}
 
-	error(message: string, error?: any): void {
+	error(message: string, error?: unknown): void {
 		if (this.logLevel <= LogLevel.ERROR) {
 			console.error(`[${this.prefix}][ERROR]`, message, error);
 		}

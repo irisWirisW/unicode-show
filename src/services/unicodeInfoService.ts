@@ -3,12 +3,20 @@
  * 负责获取和处理 Unicode 字符的详细信息
  */
 
+/**
+ * unicode-properties 库的类型定义
+ */
+interface UnicodeProperties {
+	getName(codePoint: number): string | null;
+	getCategory(codePoint: number): string | null;
+	getScript(codePoint: number): string | null;
+}
+
 // 尝试导入 unicode-properties，如果失败则使用备用方案
-let unicode: any;
+let unicode: UnicodeProperties | null;
 try {
-	unicode = require("unicode-properties");
+	unicode = require("unicode-properties") as UnicodeProperties;
 } catch (_error) {
-	console.warn("unicode-properties not available, using fallback");
 	unicode = null;
 }
 

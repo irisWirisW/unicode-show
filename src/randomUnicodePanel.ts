@@ -9,11 +9,11 @@ import { logger } from "./utils/logger";
 export class RandomUnicodePanel extends BaseWebviewPanel {
 	public static currentPanel: RandomUnicodePanel | undefined;
 
-	private constructor(panel: vscode.WebviewPanel, _extensionUri: vscode.Uri) {
+	private constructor(panel: vscode.WebviewPanel) {
 		super(panel);
 	}
 
-	public static createOrShow(extensionUri: vscode.Uri): void {
+	public static createOrShow(_extensionUri: vscode.Uri): void {
 		// 如果已经存在面板，则显示它
 		if (RandomUnicodePanel.currentPanel) {
 			RandomUnicodePanel.currentPanel._panel.reveal(vscode.ViewColumn.One);
@@ -26,7 +26,7 @@ export class RandomUnicodePanel extends BaseWebviewPanel {
 			retainContextWhenHidden: true,
 		});
 
-		RandomUnicodePanel.currentPanel = new RandomUnicodePanel(panel, extensionUri);
+		RandomUnicodePanel.currentPanel = new RandomUnicodePanel(panel);
 	}
 
 	protected handleMessage(message: AnyWebviewMessage): void {
@@ -108,6 +108,5 @@ export class RandomUnicodePanel extends BaseWebviewPanel {
 	public dispose(): void {
 		RandomUnicodePanel.currentPanel = undefined;
 		super.dispose();
-		this._panel.dispose();
 	}
 }

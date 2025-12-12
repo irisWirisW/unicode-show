@@ -39,7 +39,8 @@
       "unicode-tools": [
         {
           "id": "unicodeExplorer",
-          "name": "Unicode 工具"
+          "name": "Unicode 工具",
+          "icon": ""
         }
       ]
     },
@@ -69,7 +70,7 @@
       {
         "command": "unicode-show.openRandomUnicode",
         "key": "ctrl+alt+r",
-        "mac": "cmd+alt+u",
+        "mac": "cmd+alt+r",
         "when": "editorTextFocus"
       }
     ],
@@ -90,7 +91,13 @@
           "description": "Show Unicode Character"
         }
       }
-    }
+    },
+    "statusBarCommands": [
+      {
+        "command": "unicode-show.showStatusBar",
+        "title": "Unicode Symbol Display"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

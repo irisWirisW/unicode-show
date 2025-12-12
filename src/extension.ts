@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { COMMANDS, SUPPORTED_LANGUAGES } from "./constants";
 import { RandomUnicodePanel } from "./randomUnicodePanel";
+import type { UnicodeCharacterInfo } from "./services/unicodeInfoService";
 import { UnicodeInfoService } from "./services/unicodeInfoService";
 import { showFromUnicodeText } from "./showSymbolFromUnicodetext";
 import { UnicodeConverter } from "./unicodeConverter";
@@ -107,7 +108,7 @@ function createHover(): vscode.Hover | undefined {
 /**
  * 构建悬浮提示的 Markdown 内容
  */
-function buildHoverMarkdown(info: any): vscode.MarkdownString {
+function buildHoverMarkdown(info: UnicodeCharacterInfo): vscode.MarkdownString {
 	const markdown = new vscode.MarkdownString();
 	markdown.supportHtml = true;
 	markdown.isTrusted = true;

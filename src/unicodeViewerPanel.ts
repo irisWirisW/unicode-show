@@ -9,11 +9,11 @@ import { logger } from "./utils/logger";
 export class UnicodeViewerPanel extends BaseWebviewPanel {
 	public static currentPanel: UnicodeViewerPanel | undefined;
 
-	private constructor(panel: vscode.WebviewPanel, _extensionUri: vscode.Uri) {
+	private constructor(panel: vscode.WebviewPanel) {
 		super(panel);
 	}
 
-	public static createOrShow(extensionUri: vscode.Uri): void {
+	public static createOrShow(_extensionUri: vscode.Uri): void {
 		// 如果已经存在面板，则显示它
 		if (UnicodeViewerPanel.currentPanel) {
 			UnicodeViewerPanel.currentPanel._panel.reveal(vscode.ViewColumn.One);
@@ -26,7 +26,7 @@ export class UnicodeViewerPanel extends BaseWebviewPanel {
 			retainContextWhenHidden: true,
 		});
 
-		UnicodeViewerPanel.currentPanel = new UnicodeViewerPanel(panel, extensionUri);
+		UnicodeViewerPanel.currentPanel = new UnicodeViewerPanel(panel);
 	}
 
 	protected handleMessage(message: AnyWebviewMessage): void {
@@ -217,6 +217,5 @@ export class UnicodeViewerPanel extends BaseWebviewPanel {
 	public dispose(): void {
 		UnicodeViewerPanel.currentPanel = undefined;
 		super.dispose();
-		this._panel.dispose();
 	}
 }

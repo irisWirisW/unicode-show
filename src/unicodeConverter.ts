@@ -26,8 +26,6 @@ export class UnicodeConverter {
 	 * @returns 转换结果
 	 */
 	static convert(text: string): UnicodeConversionResult {
-		console.log("[UnicodeConverter.convert]: text:", text);
-
 		// 验证输入
 		if (!text || !text.trim()) {
 			return {
@@ -118,41 +116,24 @@ export class UnicodeConverter {
 	 * @returns 码点值或 null
 	 */
 	private static parseCodePoint(text: string): number | null {
-		let match: RegExpMatchArray | null;
-		let codePoint: number;
+		const patterns: { regex: RegExp; radix: number }[] = [
+			{ regex: /^U\+([0-9A-F]+)$/i, radix: 16 }, // U+XXXX 格式
+			{ regex: /^\\u([0-9A-F]{4})$/i, radix: 16 }, // \uXXXX 格式
+			{ regex: /^\\U([0-9A-F]{8})$/i, radix: 16 }, // \UXXXXXXXX 格式
+			{ regex: /^\\x([0-9A-F]{2})$/i, radix: 16 }, // \xXX 格式
+			{ regex: /^&#([0-9]+);?$/, radix: 10 }, // &#XXX; 格式 (十进制)
+			{ regex: /^&#x([0-9A-F]+);?$/i, radix: 16 }, // &#xXXXX; 格式
+			{ regex: /^([0-9A-F]{4,})$/i, radix: 16 }, // 纯十六进制数字
+		];
 
-		// U+XXXX 格式 (十六进制)
-		if ((match = text.match(/^U\+([0-9A-F]+)$/i))) {
-			codePoint = Number.parseInt(match[1], 16);
-		}
-		// \uXXXX 格式 (十六进制)
-		else if ((match = text.match(/^\\u([0-9A-F]{4})$/i))) {
-			codePoint = Number.parseInt(match[1], 16);
-		}
-		// \UXXXXXXXX 格式 (十六进制)
-		else if ((match = text.match(/^\\U([0-9A-F]{8})$/i))) {
-			codePoint = Number.parseInt(match[1], 16);
-		}
-		// \xXX 格式 (十六进制)
-		else if ((match = text.match(/^\\x([0-9A-F]{2})$/i))) {
-			codePoint = Number.parseInt(match[1], 16);
-		}
-		// &#XXX; 格式 (十进制)
-		else if ((match = text.match(/^&#([0-9]+);?$/))) {
-			codePoint = Number.parseInt(match[1], 10);
-		}
-		// &#xXXXX; 格式 (十六进制)
-		else if ((match = text.match(/^&#x([0-9A-F]+);?$/i))) {
-			codePoint = Number.parseInt(match[1], 16);
-		}
-		// 纯十六进制数字
-		else if ((match = text.match(/^([0-9A-F]{4,})$/i))) {
-			codePoint = Number.parseInt(match[1], 16);
-		} else {
-			return null;
+		for (const { regex, radix } of patterns) {
+			const match = text.match(regex);
+			if (match) {
+				return Number.parseInt(match[1], radix);
+			}
 		}
 
-		return codePoint;
+		return null;
 	}
 
 	/**

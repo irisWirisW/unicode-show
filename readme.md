@@ -42,10 +42,16 @@ English | [中文](./docs/readme_zh.md)
 
 ## Features
 
-- **Hover to View**: Simply hover over a Unicode code to see the character
-- **Keyboard Shortcut**: Quick access with `⌘ Cmd + ⌥ Option + U` (macOS) or `Ctrl+Alt+U` (Windows/Linux)
+- **Hover to View**: Simply hover over a Unicode code to see the character with detailed information
+- **Keyboard Shortcuts**:
+  - `Cmd+Alt+U` / `Ctrl+Alt+U` - Show Unicode character
+  - `Cmd+Alt+R` / `Ctrl+Alt+R` - Open Random Unicode Generator
 - **Right-Click Menu**: Show Unicode character from context menu
-- **Multiple Formats**: Supports 6+ common Unicode notation formats
+- **Activity Bar Panel**: Access Unicode tools from the sidebar
+  - **Random Unicode Generator** - Generate random Unicode characters
+  - **Unicode Viewer** - Look up any Unicode code point
+- **Multiple Formats**: Supports 7 common Unicode notation formats
+- **Rich Character Info**: View character name, category, script, UTF-8/UTF-16 encoding, and more
 - **Universal Support**: Works with emojis, CJK characters, symbols, and more
 
 ## Supported Formats
@@ -73,17 +79,23 @@ English | [中文](./docs/readme_zh.md)
 
 **Method 1: Hover (Recommended)**
 1. Select or hover over a Unicode code (e.g., `U+1F600`)
-2. A tooltip will automatically show the character: 😀
+2. A tooltip will automatically show the character with detailed info
 
 **Method 2: Keyboard Shortcut**
 1. Select a Unicode code
 2. Press:
-   - **macOS**: `⌘ Cmd + ⌥ Option + U`
+   - **macOS**: `Cmd + Alt + U`
    - **Windows/Linux**: `Ctrl + Alt + U`
 
 **Method 3: Context Menu**
 1. Select a Unicode code
 2. Right-click → "Show Unicode Character"
+
+**Method 4: Activity Bar (Sidebar)**
+1. Click the Unicode Tools icon in the Activity Bar
+2. Choose:
+   - **Random Unicode** - Generate random characters
+   - **Unicode Viewer** - Look up specific code points
 
 ## Examples
 
@@ -101,11 +113,13 @@ U+4E2D     → 中  (Chinese character)
 ## Supported Languages
 
 The extension works with the following file types:
-- Python (`.py`)
-- JavaScript (`.js`)
-- TypeScript (`.ts`)
-- Markdown (`.md`)
-- Plain Text (`.txt`)
+
+| Category | Languages |
+|----------|-----------|
+| **Web** | JavaScript, TypeScript, HTML, CSS, JSON |
+| **Systems** | C, C++, Rust, Go |
+| **General** | Python, Java, C#, PHP, Ruby, Swift |
+| **Other** | Markdown, Plain Text |
 
 ## Configuration
 
@@ -148,6 +162,10 @@ See [HOW_TO_TEST.md](./docs/HOW_TO_TEST.md) for detailed testing instructions.
 - [x] Support multiple Unicode formats
 - [x] Keyboard shortcuts
 - [x] Context menu integration
+- [x] Activity bar panel with tools
+- [x] Random Unicode generator
+- [x] Unicode viewer/lookup
+- [x] Rich character information display
 - [ ] Status bar display
 - [ ] Custom format configuration
 - [ ] Batch conversion

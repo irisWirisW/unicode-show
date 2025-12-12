@@ -78,7 +78,10 @@ export abstract class BaseWebviewPanel implements IWebviewPanel {
 	 * 清理资源
 	 */
 	public dispose(): void {
-		this._disposables.forEach(d => d.dispose());
+		this._panel.dispose();
+		for (const d of this._disposables) {
+			d.dispose();
+		}
 		this._disposables = [];
 	}
 }
