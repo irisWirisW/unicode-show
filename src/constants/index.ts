@@ -14,6 +14,7 @@ export const COMMANDS = {
 	SHOW_UNICODE: "unicode-show.showUnicode",
 	OPEN_RANDOM_UNICODE: "unicode-show.openRandomUnicode",
 	OPEN_UNICODE_VIEWER: "unicode-show.openUnicodeViewer",
+	OPEN_BLOCK_BROWSER: "unicode-show.openBlockBrowser",
 } as const;
 
 /**
@@ -29,6 +30,15 @@ export const VIEWS = {
 export const WEBVIEW_PANELS = {
 	RANDOM_UNICODE: "randomUnicode",
 	UNICODE_VIEWER: "unicodeViewer",
+	BLOCK_BROWSER: "blockBrowser",
+} as const;
+
+/**
+ * 状态栏配置
+ */
+export const STATUS_BAR = {
+	PRIORITY: 100,
+	ALIGNMENT: "right",
 } as const;
 
 /**

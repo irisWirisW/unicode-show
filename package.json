@@ -58,6 +58,11 @@
         "command": "unicode-show.openUnicodeViewer",
         "title": "Unicode Viewer",
         "icon": "$(window)"
+      },
+      {
+        "command": "unicode-show.openBlockBrowser",
+        "title": "Unicode Block Browser",
+        "icon": "$(library)"
       }
     ],
     "keybindings": [

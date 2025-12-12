@@ -9,15 +9,15 @@ import * as crypto from "node:crypto";
  * 生成用于 CSP 的随机 nonce
  */
 function generateNonce(): string {
-	return crypto.randomBytes(16).toString("hex");
+  return crypto.randomBytes(16).toString("hex");
 }
 
 export class HtmlTemplates {
-	/**
-	 * 获取公共样式
-	 */
-	static getCommonStyles(): string {
-		return `
+  /**
+   * 获取公共样式
+   */
+  static getCommonStyles(): string {
+    return `
             body {
                 padding: 20px;
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -171,62 +171,62 @@ export class HtmlTemplates {
 	 */
 	static getCopyButtonScript(): string {
 		return `
-            document.getElementById('copyBtn')?.addEventListener('click', () => {
-                const char = document.getElementById('unicodeChar').textContent;
-                navigator.clipboard.writeText(char).then(() => {
-                    const btn = document.getElementById('copyBtn');
-                    const originalText = btn.textContent;
-                    btn.textContent = '✓ 已复制!';
-                    setTimeout(() => {
-                        btn.textContent = originalText;
-                    }, 2000);
-                });
-            });
-        `;
+      document.getElementById('copyBtn')?.addEventListener('click', () => {
+        const char = document.getElementById('unicodeChar').textContent;
+          navigator.clipboard.writeText(char).then(() => {
+            const btn = document.getElementById('copyBtn');
+            const originalText = btn.textContent;
+            btn.textContent = '✓ 已复制!';
+            setTimeout(() => {
+              btn.textContent = originalText;
+            }, 2000);
+          });
+      });
+    `;
 	}
 
-	/**
-	 * 生成基础的HTML文档框架
-	 */
-	static createBaseHtml(title: string, content: string, extraStyles: string = "", extraScripts: string = ""): string {
-		const nonce = generateNonce();
-		return `<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'nonce-${nonce}';">
-    <title>${title}</title>
-    <style>
+  /**
+   * 生成基础的HTML文档框架
+   */
+  static createBaseHtml(title: string, content: string, extraStyles: string = "", extraScripts: string = ""): string {
+    const nonce = generateNonce();
+    return `
+    <!DOCTYPE html>
+    <html lang="zh-CN">
+      <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'nonce-${nonce}';">
+      <title>${title}</title>
+      <style>
         ${HtmlTemplates.getCommonStyles()}
         ${extraStyles}
-    </style>
-</head>
-<body>
-    ${content}
-    <script nonce="${nonce}">
-        const vscode = acquireVsCodeApi();
-        ${HtmlTemplates.getCopyButtonScript()}
-        ${extraScripts}
-    </script>
-</body>
-</html>`;
-	}
+      </style>
+      </head>
+      <body>
+        ${content}
+        <script nonce="${nonce}">
+          const vscode = acquireVsCodeApi();
+          ${HtmlTemplates.getCopyButtonScript()}
+          ${extraScripts}
+        </script>
+      </body>
+    </html>`;
+  }
 
-	/**
-	 * 生成结果展示容器的HTML
-	 */
-	static createResultContainer(showInput: boolean = false): string {
-		const inputRow = showInput
-			? `
-            <div class="info-row">
-                <span class="info-label">输入格式:</span>
-                <span class="info-value" id="inputFormat"></span>
-            </div>
-        `
-			: "";
+  /**
+   * 生成结果展示容器的HTML
+   */
+  static createResultContainer(showInput: boolean = false): string {
+    const inputRow = showInput
+      ? `
+          <div class="info-row">
+            <span class="info-label">输入格式:</span>
+            <span class="info-value" id="inputFormat"></span>
+          </div>
+        ` : "";
 
-		return `
+      return `
             <div id="resultContainer" class="result-container">
                 <div class="unicode-display" id="unicodeChar"></div>
                 <div class="unicode-info">
@@ -249,14 +249,14 @@ export class HtmlTemplates {
                 </div>
             </div>
         `;
-	}
+}
 
-	/**
-	 * 创建提示框HTML
-	 */
-	static createTipsBox(title: string, tips: string[]): string {
-		const tipsHtml = tips.map(tip => `<p>• ${tip}</p>`).join("\n");
-		return `
+  /**
+   * 创建提示框HTML
+   */
+  static createTipsBox(title: string, tips: string[]): string {
+    const tipsHtml = tips.map(tip => `<p>• ${tip}</p>`).join("\n");
+    return `
             <div class="tips">
                 <h3>${title}</h3>
                 ${tipsHtml}

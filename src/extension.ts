@@ -4,6 +4,8 @@ import { RandomUnicodePanel } from "./randomUnicodePanel";
 import type { UnicodeCharacterInfo } from "./services/unicodeInfoService";
 import { UnicodeInfoService } from "./services/unicodeInfoService";
 import { showFromUnicodeText } from "./showSymbolFromUnicodetext";
+import { StatusBarManager } from "./statusBarManager";
+import { UnicodeBlockBrowserPanel } from "./unicodeBlockBrowserPanel";
 import { UnicodeConverter } from "./unicodeConverter";
 import { UnicodeTreeProvider } from "./unicodeTreeProvider";
 import { UnicodeViewerPanel } from "./unicodeViewerPanel";
@@ -23,6 +25,9 @@ export function activate(context: vscode.ExtensionContext): void {
 
 	// 注册悬浮提示提供者
 	registerHoverProvider(context);
+
+	// 注册状态栏
+	registerStatusBar(context);
 }
 
 /**
@@ -53,7 +58,12 @@ function registerCommands(context: vscode.ExtensionContext): void {
 		UnicodeViewerPanel.createOrShow(context.extensionUri);
 	});
 
-	context.subscriptions.push(showUnicodeDisposable, randomUnicodeDisposable, unicodeViewerDisposable);
+	// 注册 Unicode 区块浏览器命令
+	const blockBrowserDisposable = vscode.commands.registerCommand(COMMANDS.OPEN_BLOCK_BROWSER, () => {
+		UnicodeBlockBrowserPanel.createOrShow(context.extensionUri);
+	});
+
+	context.subscriptions.push(showUnicodeDisposable, randomUnicodeDisposable, unicodeViewerDisposable, blockBrowserDisposable);
 }
 
 /**
@@ -67,6 +77,14 @@ function registerHoverProvider(context: vscode.ExtensionContext): void {
 	});
 
 	context.subscriptions.push(hoverDisposable);
+}
+
+/**
+ * 注册状态栏
+ */
+function registerStatusBar(context: vscode.ExtensionContext): void {
+	const statusBarManager = new StatusBarManager();
+	context.subscriptions.push(statusBarManager);
 }
 
 /**

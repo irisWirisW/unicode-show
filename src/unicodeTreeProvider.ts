@@ -48,6 +48,16 @@ export class UnicodeTreeProvider implements vscode.TreeDataProvider<UnicodeTreeI
 					},
 					new vscode.ThemeIcon("book"),
 				),
+				new UnicodeTreeItem(
+					"📚 Unicode 区块浏览器",
+					vscode.TreeItemCollapsibleState.None,
+					{
+						command: "unicode-show.openBlockBrowser",
+						title: "打开 Unicode 区块浏览器",
+						arguments: [],
+					},
+					new vscode.ThemeIcon("library"),
+				),
 			]);
 		}
 		return Promise.resolve([]);
