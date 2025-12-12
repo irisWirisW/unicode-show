@@ -15,6 +15,7 @@ export const COMMANDS = {
 	OPEN_RANDOM_UNICODE: "unicode-show.openRandomUnicode",
 	OPEN_UNICODE_VIEWER: "unicode-show.openUnicodeViewer",
 	OPEN_BLOCK_BROWSER: "unicode-show.openBlockBrowser",
+	OPEN_CHAR_TO_UNICODE: "unicode-show.openCharToUnicode",
 } as const;
 
 /**
@@ -31,6 +32,7 @@ export const WEBVIEW_PANELS = {
 	RANDOM_UNICODE: "randomUnicode",
 	UNICODE_VIEWER: "unicodeViewer",
 	BLOCK_BROWSER: "blockBrowser",
+	CHAR_TO_UNICODE: "charToUnicode",
 } as const;
 
 /**

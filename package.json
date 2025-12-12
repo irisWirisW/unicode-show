@@ -63,6 +63,11 @@
         "command": "unicode-show.openBlockBrowser",
         "title": "Unicode Block Browser",
         "icon": "$(library)"
+      },
+      {
+        "command": "unicode-show.openCharToUnicode",
+        "title": "Character to Unicode",
+        "icon": "$(arrow-swap)"
       }
     ],
     "keybindings": [

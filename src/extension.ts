@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { CharToUnicodePanel } from "./charToUnicodePanel";
 import { COMMANDS, SUPPORTED_LANGUAGES } from "./constants";
 import { RandomUnicodePanel } from "./randomUnicodePanel";
 import type { UnicodeCharacterInfo } from "./services/unicodeInfoService";
@@ -63,7 +64,12 @@ function registerCommands(context: vscode.ExtensionContext): void {
 		UnicodeBlockBrowserPanel.createOrShow(context.extensionUri);
 	});
 
-	context.subscriptions.push(showUnicodeDisposable, randomUnicodeDisposable, unicodeViewerDisposable, blockBrowserDisposable);
+	// 注册字符转 Unicode 命令
+	const charToUnicodeDisposable = vscode.commands.registerCommand(COMMANDS.OPEN_CHAR_TO_UNICODE, () => {
+		CharToUnicodePanel.createOrShow(context.extensionUri);
+	});
+
+	context.subscriptions.push(showUnicodeDisposable, randomUnicodeDisposable, unicodeViewerDisposable, blockBrowserDisposable, charToUnicodeDisposable);
 }
 
 /**

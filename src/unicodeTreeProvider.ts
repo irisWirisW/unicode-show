@@ -58,6 +58,16 @@ export class UnicodeTreeProvider implements vscode.TreeDataProvider<UnicodeTreeI
 					},
 					new vscode.ThemeIcon("library"),
 				),
+				new UnicodeTreeItem(
+					"🔄 字符转 Unicode",
+					vscode.TreeItemCollapsibleState.None,
+					{
+						command: "unicode-show.openCharToUnicode",
+						title: "打开字符转 Unicode",
+						arguments: [],
+					},
+					new vscode.ThemeIcon("arrow-swap"),
+				),
 			]);
 		}
 		return Promise.resolve([]);

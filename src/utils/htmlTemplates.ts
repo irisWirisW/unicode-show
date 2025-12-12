@@ -3,7 +3,7 @@
  * 提供统一的 HTML 模板管理
  */
 
-import * as crypto from "node:crypto";
+import * as crypto from "crypto";
 
 /**
  * 生成用于 CSP 的随机 nonce
